@@ -1,6 +1,7 @@
 import 'dart:io';
 
 // import 'package:ease_call_kit/ease_call_kit.dart';
+import 'package:jpush_flutter/jpush_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tnsocialpro/data/userinfo/data.dart';
@@ -411,6 +412,7 @@ class _ChatPageState extends State<ChatPage>
 
   /// 消息长按
   _messageOnLongPress(EMMessage msg) async {
+    print("长按");
     // EMClient.getInstance.chatManager.recallMessage(msg.msgId).then((value) => print(value)).catchError((e) => print(e));
   }
 
@@ -738,7 +740,8 @@ class _ChatPageState extends State<ChatPage>
   void sendBtnOnTap(String str) => _sendTextMessage(str);
 
   @override
-  onCmdMessagesReceived(List<EMMessage> messages) {}
+  onCmdMessagesReceived(List<EMMessage> messages) {
+  }
 
   @override
   onMessagesDelivered(List<EMMessage> messages) {}
@@ -751,6 +754,7 @@ class _ChatPageState extends State<ChatPage>
 
   @override
   onMessagesReceived(List<EMMessage> messages) {
+    print("环信收到");
     for (var msg in messages) {
       if (msg.conversationId == widget.conv.id) {
         _msgList.add(msg);

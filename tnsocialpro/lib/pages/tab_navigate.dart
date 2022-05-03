@@ -84,6 +84,11 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
           data: MediaQueryData.fromWindow(WidgetsBinding.instance.window)
               .copyWith(textScaleFactor: 1),
           child: Scaffold(
+            floatingActionButton: FloatingActionButton(
+              onPressed: _incrementCounter,
+              tooltip: 'Increment',
+              child: const Icon(Icons.add),
+            ),
             // backgroundColor: rgba(255, 255, 255, 1),
             body: PageView(
               controller: tabController,
@@ -480,10 +485,33 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
     } catch (e) {}
   }
 
+
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
     String platformVersion;
     try {
+      jpush.setup(
+        appKey: "7de928f2a3d4f23cc0faa999",
+        channel: "developer-default",
+        production: true,
+        debug: true,
+      );
+      jpush.setUnShowAtTheForeground(unShow:true);
+
+      jpush.applyPushAuthority(
+          new NotificationSettingsIOS(sound: true, alert: true, badge: false));
+
+      // Platform messages may fail, so we use a try/catch PlatformException.
+      jpush.getRegistrationID().then((rid) {
+        print("flutter get registration id : $rid");
+        registration_id = rid;
+        setState(() {
+          debugLable = "flutter getRegistrationID: $rid";
+          // 获取设备信息
+          getDeviceInfo();
+        });
+      });
+
       jpush.addEventHandler(
         onReceiveNotification: (Map<String, dynamic> message) async {
           _getJpushMessage(message);
@@ -511,28 +539,9 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
         },
       );
     } on PlatformException {
+      print("JPUSH初始化失败");
       platformVersion = 'Failed to get platform version.';
     }
-
-    jpush.setup(
-      appKey: "7de928f2a3d4f23cc0faa999",
-      channel: "developer-default",
-      production: true,
-      debug: true,
-    );
-    jpush.applyPushAuthority(
-        new NotificationSettingsIOS(sound: true, alert: true, badge: false));
-
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    jpush.getRegistrationID().then((rid) {
-      print("flutter get registration id : $rid");
-      registration_id = rid;
-      setState(() {
-       debugLable = "flutter getRegistrationID: $rid";
-        // 获取设备信息
-        getDeviceInfo();
-      });
-    });
 
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
@@ -938,5 +947,20 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
       setState(() {
       });
     }
+  }
+
+  void _incrementCounter() {
+    /*三秒后出发本地推送*/
+    var fireDate = DateTime.fromMillisecondsSinceEpoch(DateTime.now().millisecondsSinceEpoch + 3000);
+    var localNotification = LocalNotification(
+      id: 234,
+      title: '我是推送测试标题',
+      buildId: 1,
+      content: '看到了说明已经成功了',
+      fireTime: fireDate,
+      subtitle: '一个测试',
+    );
+    JPush jj = new JPush();
+    jj.sendLocalNotification(localNotification);
   }
 }

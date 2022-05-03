@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class FlutterPluginSendToAct implements MethodChannel.MethodCallHandler {
 
     @Override
     public void onMethodCall(MethodCall call, MethodChannel.Result result) {
+        Log.e("method",call.method);
         //接收来自flutter的指令
         if (call.method.equals("methodChannelphone")) {
 //            String str = call.argument("text");

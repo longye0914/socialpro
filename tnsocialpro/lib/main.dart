@@ -24,7 +24,7 @@ void main() {
     SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
-  EMPushConfig config = EMPushConfig()..enableAPNs('');
+  EMPushConfig config = EMPushConfig()..enableAPNs('')..enableMiPush("2882303761520119592", "5162011913592")..enableHWPush();
   var options = EMOptions(appKey: 'handenterprise#tianni');
   options.debugModel = true;
   options.pushConfig = config;

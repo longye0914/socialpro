@@ -51,6 +51,7 @@ class _MessagePageState extends State<MessagePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    print("消息页面初始化");
     return MediaQuery(
         data: MediaQueryData.fromWindow(WidgetsBinding.instance.window).copyWith(textScaleFactor: 1),
         child: Scaffold(
@@ -651,6 +652,7 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
 
   @override
   onMessagesReceived(List<EMMessage> messages) {
+    print("message-接收"+messages[0].body.toString());
     _reLoadAllConversations(widget.id);
   }
 
