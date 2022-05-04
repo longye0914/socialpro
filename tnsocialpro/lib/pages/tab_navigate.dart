@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:color_dart/color_dart.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:im_flutter_sdk/im_flutter_sdk.dart';
-import 'package:package_info/package_info.dart';
+import 'package:jpush_flutter/jpush_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tnsocialpro/data/alarm/data.dart';
 import 'package:tnsocialpro/data/bannerlist/data.dart';
 import 'package:tnsocialpro/data/picturelist/data.dart';
 import 'package:tnsocialpro/data/userinfo/data.dart';
@@ -21,12 +24,10 @@ import 'package:tnsocialpro/pages/main_page.dart';
 import 'package:tnsocialpro/pages/message_page.dart';
 import 'package:tnsocialpro/pages/mine_page.dart';
 import 'package:tnsocialpro/utils/global.dart';
-import 'package:flutter/services.dart';
-import 'package:jpush_flutter/jpush_flutter.dart';
+
 import 'Receive_CallPage.dart';
 import 'maingirl_page.dart';
 import 'minegirl_page.dart';
-import 'package:tnsocialpro/data/alarm/data.dart';
 
 enum Action { Ok, Cancel }
 
@@ -34,12 +35,14 @@ class TabNavigate extends StatefulWidget {
   String tk;
   int gender;
   String emaccount;
+
   TabNavigate(this.tk, this.emaccount, this.gender) {
     this.tk = tk;
     // this.currentIndex = currentIndex;
     this.emaccount = this.emaccount;
     this.gender = gender;
   }
+
   @override
   State<StatefulWidget> createState() => TabNavigateState();
 }
@@ -50,7 +53,7 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
   String registration_id, device_id;
   SharedPreferences prefs;
   final defaultColor = rgba(150, 148, 166, 100);
-  final activeColor =  rgba(69, 65, 163, 100);
+  final activeColor = rgba(69, 65, 163, 100);
   String sn;
   String path, _version, upremark, apkpath, _updateVersion;
   bool isForceUpdate = false;
@@ -93,10 +96,33 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
             body: PageView(
               controller: tabController,
               children: <Widget>[
-                (1 == widget.gender) ? MainPage(this.widget.tk, widget.gender, headimg, mainUser, bannerListDatas) : MainGirlPage(this.widget.tk, userId, widget.gender, headimg),
+                (1 == widget.gender)
+                    ? MainPage(this.widget.tk, widget.gender, headimg, mainUser,
+                        bannerListDatas)
+                    : MainGirlPage(
+                        this.widget.tk, userId, widget.gender, headimg),
                 MessagePage(this.widget.tk, widget.gender, userId, headimg),
                 // MineGirlPage(widget.tk),
-                (1 == widget.gender) ? MinePage(this.widget.tk, myInfoData, (null == visitUser || visitUser.isEmpty) ? 0 : visitUser.length, (null == fansUser || fansUser.isEmpty) ? 0 : fansUser.length) : MineGirlPage(this.widget.tk, myInfoData, myinfonum, (null == pictureList || pictureList.isEmpty) ? 0 : pictureList.length, (null == voiceList || voiceList.isEmpty) ? 0 : voiceList.length),
+                (1 == widget.gender)
+                    ? MinePage(
+                        this.widget.tk,
+                        myInfoData,
+                        (null == visitUser || visitUser.isEmpty)
+                            ? 0
+                            : visitUser.length,
+                        (null == fansUser || fansUser.isEmpty)
+                            ? 0
+                            : fansUser.length)
+                    : MineGirlPage(
+                        this.widget.tk,
+                        myInfoData,
+                        myinfonum,
+                        (null == pictureList || pictureList.isEmpty)
+                            ? 0
+                            : pictureList.length,
+                        (null == voiceList || voiceList.isEmpty)
+                            ? 0
+                            : voiceList.length),
               ],
               physics: NeverScrollableScrollPhysics(),
             ),
@@ -140,26 +166,44 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
                         ),
                       )),
                   BottomNavigationBarItem(
-                      icon: (0 == count) ? Image(
-                          height: 27,
-                          width: 27,
-                          fit: BoxFit.fill,
-                          image: AssetImage('assets/images/chat_normal.png')) : Stack(alignment: Alignment(6,-4),children: <Widget>[Image(
-                          height: 27,
-                          width: 27,
-                          fit: BoxFit.fill,
-                          image: AssetImage('assets/images/chat_normal.png')), badge(count),],
-                      ),
-                      activeIcon: (0 == count) ? Image(
-                          height: 27,
-                          width: 27,
-                          fit: BoxFit.fill,
-                          image: AssetImage('assets/images/chat_choosed.png')) : Stack(alignment: Alignment(6,-4),children: <Widget>[Image(
-                          height: 27,
-                          width: 27,
-                          fit: BoxFit.fill,
-                          image: AssetImage('assets/images/chat_choosed.png')), badge(count),],
-                      ),
+                      icon: (0 == count)
+                          ? Image(
+                              height: 27,
+                              width: 27,
+                              fit: BoxFit.fill,
+                              image:
+                                  AssetImage('assets/images/chat_normal.png'))
+                          : Stack(
+                              alignment: Alignment(6, -4),
+                              children: <Widget>[
+                                Image(
+                                    height: 27,
+                                    width: 27,
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                        'assets/images/chat_normal.png')),
+                                badge(count),
+                              ],
+                            ),
+                      activeIcon: (0 == count)
+                          ? Image(
+                              height: 27,
+                              width: 27,
+                              fit: BoxFit.fill,
+                              image:
+                                  AssetImage('assets/images/chat_choosed.png'))
+                          : Stack(
+                              alignment: Alignment(6, -4),
+                              children: <Widget>[
+                                Image(
+                                    height: 27,
+                                    width: 27,
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                        'assets/images/chat_choosed.png')),
+                                badge(count),
+                              ],
+                            ),
                       title: Text(
                         '消息',
                         style: TextStyle(
@@ -192,11 +236,22 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
   }
 
   // 红点
-  static badge(int count, {Color color = Colors.red, bool isdot = false, double height = 18.0, double width = 18.0}) {
+  static badge(int count,
+      {Color color = Colors.red,
+      bool isdot = false,
+      double height = 18.0,
+      double width = 18.0}) {
     final _num = count > 99 ? '···' : count;
-    return Container(alignment: Alignment.center, height: !isdot ? height : height/2, width: !isdot ? width : width/2,
-        decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(100.0)),child: !isdot ? Text('$_num', style: TextStyle(color: Colors.white, fontSize: 12.0)) : null
-    );
+    return Container(
+        alignment: Alignment.center,
+        height: !isdot ? height : height / 2,
+        width: !isdot ? width : width / 2,
+        decoration: BoxDecoration(
+            color: color, borderRadius: BorderRadius.circular(100.0)),
+        child: !isdot
+            ? Text('$_num',
+                style: TextStyle(color: Colors.white, fontSize: 12.0))
+            : null);
   }
 
   Future<bool> requestPop() {
@@ -224,8 +279,7 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
           try {
             await EMClient.getInstance.login(widget.emaccount, '12345678admin');
           } on EMError catch (e) {
-          } finally {
-          }
+          } finally {}
         }
       }
     });
@@ -250,25 +304,30 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
               getUserPicture();
               getUserVoice();
               myinfonum = 20;
-              if (null != myInfoData.username && myInfoData.username.isNotEmpty) {
+              if (null != myInfoData.username &&
+                  myInfoData.username.isNotEmpty) {
                 myinfonum = myinfonum + 20;
               }
               if (null != myInfoData.userpic && myInfoData.userpic.isNotEmpty) {
                 myinfonum = myinfonum + 10;
               }
-              if (null != myInfoData.birthday && myInfoData.birthday.isNotEmpty) {
+              if (null != myInfoData.birthday &&
+                  myInfoData.birthday.isNotEmpty) {
                 myinfonum = myinfonum + 10;
               }
-              if (null != myInfoData.bodylength && myInfoData.bodylength.isNotEmpty) {
+              if (null != myInfoData.bodylength &&
+                  myInfoData.bodylength.isNotEmpty) {
                 myinfonum = myinfonum + 10;
               }
               if (null != myInfoData.path && myInfoData.path.isNotEmpty) {
                 myinfonum = myinfonum + 10;
               }
-              if (null != myInfoData.signinfo && myInfoData.signinfo.isNotEmpty) {
+              if (null != myInfoData.signinfo &&
+                  myInfoData.signinfo.isNotEmpty) {
                 myinfonum = myinfonum + 10;
               }
-              if (null != myInfoData.myselfintro && myInfoData.myselfintro.isNotEmpty) {
+              if (null != myInfoData.myselfintro &&
+                  myInfoData.myselfintro.isNotEmpty) {
                 myinfonum = myinfonum + 10;
               }
               // 资料
@@ -284,12 +343,16 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
                 }
               }
               // 接单设置
-              if (1 == myInfoData.videosetflag || 1 == myInfoData.voicesetflag || 1 == myInfoData.priimsetflag) {
+              if (1 == myInfoData.videosetflag ||
+                  1 == myInfoData.voicesetflag ||
+                  1 == myInfoData.priimsetflag) {
                 if (0 == myInfoData.taskflag || null == myInfoData.taskflag) {
                   updateOrderTask(1);
                 }
               } else {
-                if (0 == myInfoData.videosetflag && 0 == myInfoData.voicesetflag && 0 == myInfoData.priimsetflag) {
+                if (0 == myInfoData.videosetflag &&
+                    0 == myInfoData.voicesetflag &&
+                    0 == myInfoData.priimsetflag) {
                   if (1 == myInfoData.taskflag || null == myInfoData.taskflag) {
                     updateOrderTask(0);
                   }
@@ -305,10 +368,9 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
   /// 获取用户图片
   getUserPicture() async {
     try {
-      var res = await G.req.shop.getUserPictureReq(
-          tk: widget.tk,
-          user_id: userId
-      );
+      print("主页获取图片");
+      var res =
+          await G.req.shop.getUserPictureReq(tk: widget.tk, user_id: userId);
       if (res.data != null) {
         int code = res.data['code'];
         if (20000 == code) {
@@ -324,10 +386,8 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
   /// 资料更新状态
   updateInfo(int infoflag) async {
     try {
-      var res = await G.req.shop.updateInfoReq(
-          tk: this.widget.tk,
-          infoflag: infoflag
-      );
+      var res = await G.req.shop
+          .updateInfoReq(tk: this.widget.tk, infoflag: infoflag);
       var data = res.data;
       if (data == null) return null;
       // G.loading.hide(context);
@@ -345,10 +405,8 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
   /// 接单设置状态
   updateOrderTask(int taskflag) async {
     try {
-      var res = await G.req.shop.updateOrderTaskReq(
-          tk: this.widget.tk,
-          taskflag: taskflag
-      );
+      var res = await G.req.shop
+          .updateOrderTaskReq(tk: this.widget.tk, taskflag: taskflag);
       var data = res.data;
       if (data == null) return null;
       // G.loading.hide(context);
@@ -367,10 +425,7 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
   updateVideoSet(String videoset, int videosetflag) async {
     try {
       var res = await G.req.shop.videoSetReq(
-          tk: this.widget.tk,
-          videoset: videoset,
-          videosetflag: videosetflag
-      );
+          tk: this.widget.tk, videoset: videoset, videosetflag: videosetflag);
       var data = res.data;
       if (data == null) return null;
       // G.loading.hide(context);
@@ -389,10 +444,7 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
   updateVoiceSet(String voiceset, int voicesetflag) async {
     try {
       var res = await G.req.shop.voiceSetReq(
-          tk: this.widget.tk,
-          voiceset: voiceset,
-          voicesetflag: voicesetflag
-      );
+          tk: this.widget.tk, voiceset: voiceset, voicesetflag: voicesetflag);
       var data = res.data;
       if (data == null) return null;
       // G.loading.hide(context);
@@ -411,10 +463,7 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
   updatePriimSet(String priimset, int priimsetflag) async {
     try {
       var res = await G.req.shop.priimSetReq(
-          tk: this.widget.tk,
-          priimset: priimset,
-          priimsetflag: priimsetflag
-      );
+          tk: this.widget.tk, priimset: priimset, priimsetflag: priimsetflag);
       var data = res.data;
       if (data == null) return null;
       // G.loading.hide(context);
@@ -432,10 +481,8 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
   /// 获取用户音频
   getUserVoice() async {
     try {
-      var res = await G.req.shop.getUserVoiceReq(
-          tk: widget.tk,
-          user_id: userId
-      );
+      var res =
+          await G.req.shop.getUserVoiceReq(tk: widget.tk, user_id: userId);
       if (res.data != null) {
         int code = res.data['code'];
         if (20000 == code) {
@@ -449,7 +496,7 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
   }
 
   /// 获取用户列表
-  void getAllUserData() async{
+  void getAllUserData() async {
     // 看过我
     try {
       var res = await G.req.shop.getAllUserlistReq(
@@ -461,7 +508,7 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
           mainUser.addAll(UserlistParent.fromJson(res.data).data);
         }
       });
-    } catch(e) {
+    } catch (e) {
       // setState(() {
       // });
     }
@@ -485,7 +532,6 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
     } catch (e) {}
   }
 
-
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
     String platformVersion;
@@ -496,7 +542,7 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
         production: true,
         debug: true,
       );
-      jpush.setUnShowAtTheForeground(unShow:true);
+      jpush.setUnShowAtTheForeground(unShow: true);
 
       jpush.applyPushAuthority(
           new NotificationSettingsIOS(sound: true, alert: true, badge: false));
@@ -531,7 +577,8 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
             debugLable = "flutter onReceiveMessage: $message";
           });
         },
-        onReceiveNotificationAuthorization: (Map<String, dynamic> message) async {
+        onReceiveNotificationAuthorization:
+            (Map<String, dynamic> message) async {
           // _getJpushMessage(message);
           setState(() {
             debugLable = "flutter onReceiveNotificationAuthorization: $message";
@@ -549,7 +596,7 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
     if (!mounted) return;
 
     setState(() {
-     debugLable = platformVersion;
+      debugLable = platformVersion;
     });
   }
 
@@ -689,9 +736,8 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
               builder: (context) => new ReceiveCallPage(
                 //视频房间频道号写死，为了方便体验
                 userName: name,
-                head_img: (null == head_img || head_img.isEmpty)
-                    ? ""
-                    : head_img,
+                head_img:
+                    (null == head_img || head_img.isEmpty) ? "" : head_img,
                 channel: channel,
                 tk: this.widget.tk,
                 callFlag: false,
@@ -721,9 +767,8 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
               builder: (context) => new ReceiveCallPage(
                 //视频房间频道号写死，为了方便体验
                 userName: name,
-                head_img: (null == head_img || head_img.isEmpty)
-                    ? ""
-                    : head_img,
+                head_img:
+                    (null == head_img || head_img.isEmpty) ? "" : head_img,
                 channel: channel,
                 tk: this.widget.tk,
                 callFlag: false,
@@ -760,12 +805,12 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
   submitDeviceInfo() async {
     try {
       var res = await G.req.shop.submitDeviceInfoReq(
-        tk: this.widget.tk,
-        register_id: registration_id,
-        type: (defaultTargetPlatform == TargetPlatform.iOS) ? 'ios' : 'android',
-        device_id: device_id,
-        user_id: userId
-      );
+          tk: this.widget.tk,
+          register_id: registration_id,
+          type:
+              (defaultTargetPlatform == TargetPlatform.iOS) ? 'ios' : 'android',
+          device_id: device_id,
+          user_id: userId);
       if (res.data == null) {
 //        return;
       } else {
@@ -805,24 +850,22 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
         }
       });
     });
-    myinfolistBus.on<MyinfolistEvent>().listen((event) {
-      setState(() {
-        getUserInfo();
-      });
-    });
+    // myinfolistBus.on<MyinfolistEvent>().listen((event) {
+    //   getUserInfo();
+    // });
   }
 
   void refreshUnreadIm() async {
     try {
       count = 0;
-      List<EMConversation> list = await EMClient.getInstance.chatManager.loadAllConversations();
+      List<EMConversation> list =
+          await EMClient.getInstance.chatManager.loadAllConversations();
       for (var conv in list) {
         count += conv.unreadCount;
       }
       setState(() {});
     } on Error {
-    } finally {
-    }
+    } finally {}
   }
 
   Future _openAlertDialog(String content) async {
@@ -877,18 +920,18 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.inactive:
-      // 处于这种状态的应用程序应该假设它们可能在任何时候暂停。
+        // 处于这种状态的应用程序应该假设它们可能在任何时候暂停。
         break;
       case AppLifecycleState.resumed: // 应用程序可见，前台
-      // G.toast('应用程序可见，前台');
+        // G.toast('应用程序可见，前台');
         submitDeviceInfo2("2");
         break;
       case AppLifecycleState.paused: // 应用程序不可见，后台
-      // G.toast('应用程序不可见，后台');
+        // G.toast('应用程序不可见，后台');
         submitDeviceInfo2("3");
         break;
       case AppLifecycleState.detached:
-      // 申请将暂时暂停
+        // 申请将暂时暂停
         break;
     }
   }
@@ -910,7 +953,7 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
   }
 
   /// 获取看过我列表
-  void getVisitUserData() async{
+  void getVisitUserData() async {
     // 看过我
     try {
       var res = await G.req.shop.getVisitUserReq(
@@ -923,35 +966,32 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
           visitUser.addAll(UserlistParent.fromJson(res.data).data);
         }
       });
-    } catch(e) {
-      setState(() {
-      });
+    } catch (e) {
+      setState(() {});
     }
   }
 
   /// 获取看过我列表
-  void getMyLikelistData() async{
+  void getMyLikelistData() async {
     // 我喜欢的
     try {
-      var res = await G.req.shop.getMyLikelistReq(
-          tk: widget.tk,
-          user_id: userId
-      );
+      var res =
+          await G.req.shop.getMyLikelistReq(tk: widget.tk, user_id: userId);
       setState(() {
         if (res.data != null) {
           fansUser.clear();
           fansUser.addAll(UserlistParent.fromJson(res.data).data);
         }
       });
-    } catch(e) {
-      setState(() {
-      });
+    } catch (e) {
+      setState(() {});
     }
   }
 
   void _incrementCounter() {
     /*三秒后出发本地推送*/
-    var fireDate = DateTime.fromMillisecondsSinceEpoch(DateTime.now().millisecondsSinceEpoch + 3000);
+    var fireDate = DateTime.fromMillisecondsSinceEpoch(
+        DateTime.now().millisecondsSinceEpoch + 3000);
     var localNotification = LocalNotification(
       id: 234,
       title: '我是推送测试标题',

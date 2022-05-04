@@ -40,13 +40,13 @@ class _MyvoicePageState extends State<MyvoicePage> {
         height: double.infinity,
         width: double.infinity,
         // color: rgba(255, 255, 255, 1),
-        decoration: new BoxDecoration(
+        decoration: const BoxDecoration(
         // color: Colors.grey,
         // border: new Border.all(width: 2.0, color: Colors.transparent),
         // borderRadius: new BorderRadius.all(new Radius.circular(0)),
-        image: new DecorationImage(
+        image:  DecorationImage(
           fit: BoxFit.fill,
-          image: new AssetImage('assets/images/icon_myvoicebg.png'),),),
+          image: AssetImage('assets/images/icon_myvoicebg.png'),),),
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
@@ -55,7 +55,7 @@ class _MyvoicePageState extends State<MyvoicePage> {
                 Column(
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 35, left: 15, right: 15),
+                      margin: const EdgeInsets.only(top: 60, right: 15),
                       color: Colors.transparent,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -63,12 +63,14 @@ class _MyvoicePageState extends State<MyvoicePage> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              myinfolistBus.fire(new MyinfolistEvent(true));
+                              myinfolistBus.fire(MyinfolistEvent(true));
                               Navigator.pop(context);
                             },
                             child: Container(
-                              width: 8.9,
-                              height: 16,
+                              decoration: BoxDecoration(color: Colors.transparent),
+                              width: 40,
+                              height: 40,
+                              padding: EdgeInsets.only(left: 15),
                               alignment: Alignment.centerLeft,
                               child: Image.asset(
                                 'assets/images/icon_whiteback.png',
@@ -521,7 +523,9 @@ class _MyvoicePageState extends State<MyvoicePage> {
   void deactivate() async {
     await audioPlayer.stop();
     audioPlayer = null;
-    setState(() {});
+    if(mounted){
+      setState(() {});
+    }
     super.deactivate();
   }
 
