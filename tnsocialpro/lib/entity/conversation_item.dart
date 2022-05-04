@@ -1,17 +1,18 @@
-
 import 'package:flutter/material.dart';
 import 'package:im_flutter_sdk/im_flutter_sdk.dart';
 import 'package:tnsocialpro/utils/common_date.dart';
 import 'package:tnsocialpro/widget/common_widgets.dart';
-import 'package:tnsocialpro/widget/wx_expression.dart';
 
 class ConversationItem extends StatefulWidget {
   @override
-  const ConversationItem({EMConversation conv, VoidCallback onTap})
+  const ConversationItem(
+      {EMConversation conv, VoidCallback onTap, VoidCallback onAvatorClick})
       : _conv = conv,
-        _onTap = onTap;
+        _onTap = onTap,
+        _onAvatorClick = onAvatorClick;
   final EMConversation _conv;
   final VoidCallback _onTap;
+  final VoidCallback _onAvatorClick;
 
   _ConversationItemState createState() => _ConversationItemState();
 }
@@ -37,21 +38,30 @@ class _ConversationItemState extends State<ConversationItem> {
               children: [
                 // 头像
                 Positioned(
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.only(
-                      left: 20,
-                      top: 20,
-                      // bottom: sHeight(14),
-                      right: 15,
-                    ),
-                    child: new CircleAvatar(
-                        backgroundImage: (widget._conv.ext['userpic'].toString().isEmpty) ? new AssetImage('images/contact_default_avatar.png') : new NetworkImage(widget._conv.ext['userpic'].toString()),
-                        radius: 50),
-                  )
-                ),
+                    child: GestureDetector(
+                        onTap: () => {
+                          widget._onAvatorClick()
+                        },
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          alignment: Alignment.centerLeft,
+                          margin: EdgeInsets.only(
+                            left: 20,
+                            top: 20,
+                            // bottom: sHeight(14),
+                            right: 15,
+                          ),
+                          child: new CircleAvatar(
+                              backgroundImage: (widget._conv.ext['userpic']
+                                      .toString()
+                                      .isEmpty)
+                                  ? new AssetImage(
+                                      'images/contact_default_avatar.png')
+                                  : new NetworkImage(
+                                      widget._conv.ext['userpic'].toString()),
+                              radius: 50),
+                        ))),
               ],
             ),
             Expanded(
@@ -71,24 +81,21 @@ class _ConversationItemState extends State<ConversationItem> {
                             maxLines: 1,
                             textAlign: TextAlign.left,
                             style: TextStyle(
-                              color: Colors.black87,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500
-                            ),
+                                color: Colors.black87,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500),
                           ),
                         ),
                         // 时间
                         Container(
-                          margin: EdgeInsets.only(
-                              left: 5, right: 20, top: 26),
+                          margin: EdgeInsets.only(left: 5, right: 20, top: 26),
                           child: Text(
                             _latestMessageTime(),
                             maxLines: 1,
                             style: TextStyle(
-                              color: Colors.black54,
-                              fontSize: 10,
-                                fontWeight: FontWeight.w400
-                            ),
+                                color: Colors.black54,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w400),
                           ),
                         ),
                       ],
@@ -115,8 +122,7 @@ class _ConversationItemState extends State<ConversationItem> {
                         ),
                         // 未读
                         Container(
-                          margin: EdgeInsets.only(
-                              left: 5, right: 15),
+                          margin: EdgeInsets.only(left: 5, right: 15),
                           child: unreadCoundWidget(
                             _unreadCount(),
                           ),
@@ -193,6 +199,7 @@ class _ConversationItemState extends State<ConversationItem> {
     if (this.widget._conv.latestMessage == null) {
       return '';
     }
-    return CommonDate.timeShowUtils(this.widget._conv.latestMessage?.serverTime ?? 0);
+    return CommonDate.timeShowUtils(
+        this.widget._conv.latestMessage?.serverTime ?? 0);
   }
 }

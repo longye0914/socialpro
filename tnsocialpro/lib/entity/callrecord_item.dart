@@ -1,17 +1,23 @@
-
 import 'package:flutter/material.dart';
 import 'package:tnsocialpro/data/callrecord/data.dart';
 import 'package:tnsocialpro/widget/common_widgets.dart';
 
 class CallRecordItem extends StatefulWidget {
   @override
-  const CallRecordItem({CallRecordData conv, VoidCallback onTap, int gender, int status})
+  const CallRecordItem(
+      {CallRecordData conv,
+      VoidCallback onTap,
+      VoidCallback onAvatorTap,
+      int gender,
+      int status})
       : _conv = conv,
         _onTap = onTap,
+        _onAvatorTap = onAvatorTap,
         _gender = gender,
         _status = status;
   final CallRecordData _conv;
   final VoidCallback _onTap;
+  final VoidCallback _onAvatorTap;
   final int _gender, _status;
 
   _CallRecordItemState createState() => _CallRecordItemState();
@@ -75,9 +81,12 @@ class _CallRecordItemState extends State<CallRecordItem> {
                     // bottom: sHeight(14),
                     right: sWidth(15),
                   ),
-                  child: new CircleAvatar(
-                      backgroundImage: (null == _showHeadpic() || _showHeadpic().isEmpty ) ? new AssetImage('images/contact_default_avatar.png') : new NetworkImage(_showHeadpic()),
-                      radius: 50),
+                  child:GestureDetector( onTap: ()=>{widget._onAvatorTap()}, child: new CircleAvatar(
+                      backgroundImage: (null == _showHeadpic() ||
+                          _showHeadpic().isEmpty)
+                          ? new AssetImage('images/contact_default_avatar.png')
+                          : new NetworkImage(_showHeadpic()),
+                      radius: 50),),
                 ),
                 // (1 == widget._status) ? Positioned(
                 //   right: 0,
@@ -110,22 +119,19 @@ class _CallRecordItemState extends State<CallRecordItem> {
                       style: TextStyle(
                           color: Color.fromRGBO(69, 65, 103, 1),
                           fontSize: sFontSize(16),
-                          fontWeight: FontWeight.w500
-                      ),
+                          fontWeight: FontWeight.w500),
                     ),
                   ),
                   // 时长
                   Container(
-                    margin: EdgeInsets.only(
-                        left: sWidth(0), top: sWidth(10)),
+                    margin: EdgeInsets.only(left: sWidth(0), top: sWidth(10)),
                     child: Text(
                       '通话' + this.widget._conv.calllength,
                       maxLines: 1,
                       style: TextStyle(
                           color: Color.fromRGBO(150, 148, 166, 1),
                           fontSize: sFontSize(14),
-                          fontWeight: FontWeight.w400
-                      ),
+                          fontWeight: FontWeight.w400),
                     ),
                   ),
                 ],
@@ -140,24 +146,29 @@ class _CallRecordItemState extends State<CallRecordItem> {
                   // 时间点
                   Container(
                     alignment: Alignment.center,
-                    margin: EdgeInsets.only(
-                        left: sWidth(10), right: sWidth(15)),
+                    margin:
+                        EdgeInsets.only(left: sWidth(10), right: sWidth(15)),
                     child: Text(
                       this.widget._conv.create_time,
                       maxLines: 1,
                       style: TextStyle(
                           color: Color.fromRGBO(150, 148, 166, 1),
                           fontSize: sFontSize(10),
-                          fontWeight: FontWeight.w400
-                      ),
+                          fontWeight: FontWeight.w400),
                     ),
                   ),
                   // 图标
                   Container(
                     alignment: Alignment.centerRight,
-                    margin: EdgeInsets.only(
-                         right: sWidth(23)),
-                    child: Image.asset((0 == this.widget._conv.calltype) ? 'assets/images/icon_callvoice.png' : 'assets/images/icon_callvideo.png', height: (0 == this.widget._conv.calltype) ? 21 : 19, width: (0 == this.widget._conv.calltype) ? 16 : 23, fit: BoxFit.fill,),
+                    margin: EdgeInsets.only(right: sWidth(23)),
+                    child: Image.asset(
+                      (0 == this.widget._conv.calltype)
+                          ? 'assets/images/icon_callvoice.png'
+                          : 'assets/images/icon_callvideo.png',
+                      height: (0 == this.widget._conv.calltype) ? 21 : 19,
+                      width: (0 == this.widget._conv.calltype) ? 16 : 23,
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ],
               ),
@@ -170,12 +181,16 @@ class _CallRecordItemState extends State<CallRecordItem> {
 
   /// 显示头像
   String _showHeadpic() {
-    return (1 == this.widget._gender) ? this.widget._conv.anthorpic : this.widget._conv.userpic;
+    return (1 == this.widget._gender)
+        ? this.widget._conv.anthorpic
+        : this.widget._conv.userpic;
   }
 
   /// 显示的名称
   String _showName() {
-    return (1 == this.widget._gender) ? this.widget._conv.anthorname : this.widget._conv.username;
+    return (1 == this.widget._gender)
+        ? this.widget._conv.anthorname
+        : this.widget._conv.username;
   }
 
   /// 在线状态

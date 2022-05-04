@@ -1,4 +1,3 @@
-
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +14,7 @@ import 'package:tnsocialpro/entity/conversation_item.dart';
 import 'package:tnsocialpro/event/event_bus_manager.dart';
 import 'package:tnsocialpro/event/messagetab_event.dart';
 import 'package:tnsocialpro/pages/chat/chat_page.dart';
+import 'package:tnsocialpro/pages/girldetailpage.dart';
 import 'package:tnsocialpro/utils/colors.dart';
 import 'package:tnsocialpro/utils/global.dart';
 import 'package:tnsocialpro/widget/common_widgets.dart';
@@ -28,9 +28,11 @@ import 'VideoCallPage.dart';
  */
 String tkV, mheadimgV;
 int genderV, userIdV;
+
 class MessagePage extends StatefulWidget {
   String tk, mheadimg;
   int gender, userId;
+
   MessagePage(this.tk, this.gender, this.userId, this.mheadimg) {
     tkV = this.tk;
     genderV = this.gender;
@@ -54,42 +56,49 @@ class _MessagePageState extends State<MessagePage>
     super.build(context);
     print("消息页面初始化");
     return MediaQuery(
-        data: MediaQueryData.fromWindow(WidgetsBinding.instance.window).copyWith(textScaleFactor: 1),
+        data: MediaQueryData.fromWindow(WidgetsBinding.instance.window)
+            .copyWith(textScaleFactor: 1),
         child: Scaffold(
-            backgroundColor: rgba(241, 241, 241, 1),
-            body: Container(
-              color: Colours.light_grey,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    height: 50,
-                    margin: EdgeInsets.only(bottom: 15.5, top: 40),
-                    child: Row(children: <Widget>[
-                      Expanded(
-                        child: TabBar(
-                          isScrollable: true,
-                          controller: mController,
-                          labelColor: Colours.backbg,
-                          indicatorColor: rgba(209, 99, 242, 1),
-                          indicatorSize: TabBarIndicatorSize.label,
-                          indicatorWeight: 4.0,
-                          unselectedLabelColor:Colours.backbg,
-                          unselectedLabelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: rgba(150, 148, 166, 1)),
-                          labelStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.w500, color: rgba(69, 65, 103, 1)),
-                          tabs: myTabs,
-                        ),
+          backgroundColor: rgba(241, 241, 241, 1),
+          body: Container(
+            color: Colours.light_grey,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  height: 50,
+                  margin: EdgeInsets.only(bottom: 15.5, top: 40),
+                  child: Row(children: <Widget>[
+                    Expanded(
+                      child: TabBar(
+                        isScrollable: true,
+                        controller: mController,
+                        labelColor: Colours.backbg,
+                        indicatorColor: rgba(209, 99, 242, 1),
+                        indicatorSize: TabBarIndicatorSize.label,
+                        indicatorWeight: 4.0,
+                        unselectedLabelColor: Colours.backbg,
+                        unselectedLabelStyle: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: rgba(150, 148, 166, 1)),
+                        labelStyle: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w500,
+                            color: rgba(69, 65, 103, 1)),
+                        tabs: myTabs,
                       ),
-                    ]),
-                  ),
-                  Expanded(
-                    child: TabBarView(
-                      controller: mController,
-                      children: bodys,
                     ),
-                  )
-                ],
-              ),
+                  ]),
+                ),
+                Expanded(
+                  child: TabBarView(
+                    controller: mController,
+                    children: bodys,
+                  ),
+                )
+              ],
             ),
+          ),
         ));
   }
 
@@ -146,22 +155,22 @@ class _MessagePageState extends State<MessagePage>
         length: myTabs.length,
         vsync: this,
       )..addListener(() {
-        // switch (mController.index) {
-        //   case 0:
-        //     eventMessagetabBus.fire(new MessageTabEvent(1));
-        //     break;
-        //   case 1:
-        //     eventMessagetabBus.fire(new MessageTabEvent(2));
-        //     break;
-        // }
-      });
+          // switch (mController.index) {
+          //   case 0:
+          //     eventMessagetabBus.fire(new MessageTabEvent(1));
+          //     break;
+          //   case 1:
+          //     eventMessagetabBus.fire(new MessageTabEvent(2));
+          //     break;
+          // }
+        });
     }
   }
 
   @override
   void dispose() {
     super.dispose();
-    if(null!=mController) {
+    if (null != mController) {
       mController.dispose();
     }
   }
@@ -170,12 +179,13 @@ class _MessagePageState extends State<MessagePage>
   bool get wantKeepAlive => true;
 }
 
-class CategoryModel{
-
+class CategoryModel {
   String name;
   int id;
-  CategoryModel({this.name,this.id});
-  factory CategoryModel.fromJson(Map<String, dynamic> parsedJson){
+
+  CategoryModel({this.name, this.id});
+
+  factory CategoryModel.fromJson(Map<String, dynamic> parsedJson) {
     return CategoryModel(
       id: parsedJson['id'],
       name: parsedJson['name'],
@@ -189,7 +199,8 @@ class CategoryModel{
 class FindingTabView extends StatefulWidget with ChangeNotifier {
   final int currentPage;
   final int id;
-  FindingTabView(this.currentPage,this.id);
+
+  FindingTabView(this.currentPage, this.id);
 
   num totalUnreadCount = 0;
 
@@ -202,15 +213,17 @@ class FindingTabView extends StatefulWidget with ChangeNotifier {
   _FindingTabViewState createState() => _FindingTabViewState();
 }
 
-class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAliveClientMixin implements EMChatManagerListener {
-
+class _FindingTabViewState extends State<FindingTabView>
+    with AutomaticKeepAliveClientMixin
+    implements EMChatManagerListener {
   GlobalKey _headerKey = GlobalKey();
   GlobalKey _footerKey = GlobalKey();
   List<EMConversation> _conversationsList = [];
   List<CallRecordData> _callRecords = [];
   List<int> _calluserIds = [];
   List<int> _callauthIds = [];
-  RefreshController _refreshController = RefreshController(initialRefresh: true);
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: true);
   var notifier;
   LoadState _layoutState = LoadState.State_Loading;
   List<MyInfoData> myInfoDatas = [];
@@ -226,11 +239,10 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
     // getCallRecordlistReq();
     // 添加环信回调监听
     EMClient.getInstance.chatManager.addListener(this);
-    print( EMClient.getInstance.currentUsername);
-
+    print(EMClient.getInstance.currentUsername);
 
     try {
-      Future ff =  EMClient.getInstance.chatManager.loadAllConversations();
+      Future ff = EMClient.getInstance.chatManager.loadAllConversations();
 
       print(ff);
     } on EMError catch (e) {
@@ -268,20 +280,22 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
           footer: MaterialFooter(
             key: _footerKey,
           ),
-          child:CustomScrollView(
+          child: CustomScrollView(
             slivers: <Widget>[
               SliverList(
-                delegate: (1 == widget.id) ? SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                    return conversationWidgetForIndex(index);
-                  },
-                  childCount: _conversationsList.length,
-                ) : SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                    return callRecordWidgetForIndex(index);
-                  },
-                  childCount: _callRecords.length,
-                ) ,
+                delegate: (1 == widget.id)
+                    ? SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          return conversationWidgetForIndex(index);
+                        },
+                        childCount: _conversationsList.length,
+                      )
+                    : SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          return callRecordWidgetForIndex(index);
+                        },
+                        childCount: _callRecords.length,
+                      ),
               ),
             ],
           ),
@@ -290,8 +304,7 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
           },
           onLoad: () async {
             _reLoadAllConversations(widget.id);
-          }
-      ),
+          }),
     );
     // return SmartRefresher(
     //   enablePullDown: false,
@@ -331,11 +344,12 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
 
   /// 更新会话列表
   void _reLoadAllConversations(int id) async {
-    print("更新会话列表"+id.toString());
+    print("更新会话列表" + id.toString());
     if (1 == id) {
       // 消息
       try {
-        List<EMConversation> list = await EMClient.getInstance.chatManager.loadAllConversations();
+        List<EMConversation> list =
+            await EMClient.getInstance.chatManager.loadAllConversations();
         _conversationsList.clear();
         for (EMConversation emConversation in list) {
           try {
@@ -386,9 +400,9 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
   Widget conversationWidgetForIndex(int index) {
     return slidableItem(
       child: ConversationItem(
-        conv: _conversationsList[index],
-        onTap: () => {_conversationItemOnPress(index)},
-      ),
+          conv: _conversationsList[index],
+          onTap: () => {_conversationItemOnPress(index)},
+          onAvatorClick: () => {_conversationAvatorItemOnPress(index)}),
       // 侧滑事件，有必要可以加上置顶之类的
       actions: [slidableDeleteAction(onTap: () => _deleteConversation(index))],
     );
@@ -397,8 +411,7 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
   // 获取用户信息
   getUserInfoByphoneReq(String phone, EMConversation con) async {
     try {
-      var res = await G.req.shop
-          .getUserInfoByphone(tk: tkV, phone: phone);
+      var res = await G.req.shop.getUserInfoByphone(tk: tkV, phone: phone);
 
       if (res.data == null) return;
       int code = res.data['code'];
@@ -414,10 +427,11 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
                   myInfoDa.id,
                   myInfoDa.username,
                   myInfoDa.userpic,
-                  (null == myInfoDa.priimset) ? '' : myInfoDa.priimset.split('B')[0],
+                  (null == myInfoDa.priimset)
+                      ? ''
+                      : myInfoDa.priimset.split('B')[0],
                   mheadimgV,
-                  con
-              ),
+                  con),
             ),
           ).then((value) {
             // 返回时刷新页面
@@ -434,11 +448,9 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
     try {
       var res;
       if (1 == genderV) {
-        res = await G.req.shop
-            .getUserCalllistReq(tk: tkV, user_id: userIdV);
+        res = await G.req.shop.getUserCalllistReq(tk: tkV, user_id: userIdV);
       } else {
-        res = await G.req.shop
-            .getAnthorCalllistReq(tk: tkV, anthorid: userIdV);
+        res = await G.req.shop.getAnthorCalllistReq(tk: tkV, anthorid: userIdV);
       }
 
       if (res.data == null) return;
@@ -448,9 +460,10 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
         _callRecords.clear();
         _calluserIds.clear();
         _callauthIds.clear();
-        List<CallRecordData> _callRecords2 = CallRecordParent.fromJson(res.data).data;
+        List<CallRecordData> _callRecords2 =
+            CallRecordParent.fromJson(res.data).data;
         if (_callRecords2.isNotEmpty) {
-          for(CallRecordData callRecordData in _callRecords2) {
+          for (CallRecordData callRecordData in _callRecords2) {
             if (1 == genderV) {
               // 用户
               if (_callRecords.isEmpty) {
@@ -458,7 +471,7 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
                 _callRecords.add(callRecordData);
               } else {
                 if (!_callRecords.contains(callRecordData)) {
-                  if(!_callauthIds.contains(callRecordData.anthorid)) {
+                  if (!_callauthIds.contains(callRecordData.anthorid)) {
                     _callauthIds.add(callRecordData.anthorid);
                     _callRecords.add(callRecordData);
                   }
@@ -471,7 +484,7 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
                 _callRecords.add(callRecordData);
               } else {
                 if (!_callRecords.contains(callRecordData)) {
-                  if(!_calluserIds.contains(callRecordData.user_id)) {
+                  if (!_calluserIds.contains(callRecordData.user_id)) {
                     _calluserIds.add(callRecordData.user_id);
                     _callRecords.add(callRecordData);
                   }
@@ -500,6 +513,7 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
       child: CallRecordItem(
         conv: _callRecords[index],
         onTap: () => {_callRecordPress(index)},
+        onAvatorTap: () => {_callAvatorItemOnPress(index)},
         gender: genderV,
         status: 1,
       ),
@@ -511,10 +525,8 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
   /// 通话记录侧滑删除按钮点击
   _deleteCallRecord(int index) async {
     try {
-      var res = await G.req.shop.deleteCallrecordReq(
-          tk: tkV,
-          id: _callRecords[index].id
-      );
+      var res = await G.req.shop
+          .deleteCallrecordReq(tk: tkV, id: _callRecords[index].id);
       if (res.data != null) {
         int code = res.data['code'];
         if (20000 == code) {
@@ -527,11 +539,37 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
   /// 侧滑删除按钮点击
   _deleteConversation(int index) async {
     try {
-      await EMClient.getInstance.chatManager.deleteConversation(_conversationsList[index].id);
+      await EMClient.getInstance.chatManager
+          .deleteConversation(_conversationsList[index].id);
       _conversationsList.removeAt(index);
       _reLoadAllConversations(widget.id);
-    } on Error {} finally {
+    } on Error {
+    } finally {
       setState(() {});
+    }
+  }
+
+  _callAvatorItemOnPress(index) {
+    CallRecordData con = _callRecords[index];
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                GirlDetailPage(tkV, con.anthorid, genderV, mheadimgV)));
+  }
+  // 获取用户信息
+  _conversationAvatorItemOnPress(index) async {
+    EMConversation con = _conversationsList[index];
+    var res = await G.req.shop.getUserInfoByphone(tk: tkV, phone: con.id);
+    if (res.data == null) return;
+    int code = res.data['code'];
+    if (20000 == code) {
+      MyInfoData myInfoDa = MyInfoParent.fromJson(res.data).data;
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  GirlDetailPage(tkV, myInfoDa.id, genderV, mheadimgV)));
     }
   }
 
@@ -554,13 +592,34 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
 
   // 通话记录被点击
   _callRecordPress(int index) {
+    print(888888);
     if (1 == genderV) {
       if (0 == _callRecords[index].calltype) {
         // 语音
-        onAudio(context, (1 == genderV) ? _callRecords[index].anthorid : _callRecords[index].user_id, (1 == genderV) ? _callRecords[index].anthorname : _callRecords[index].username, (1 == genderV) ? _callRecords[index].anthorpic : _callRecords[index].userpic);
+        onAudio(
+            context,
+            (1 == genderV)
+                ? _callRecords[index].anthorid
+                : _callRecords[index].user_id,
+            (1 == genderV)
+                ? _callRecords[index].anthorname
+                : _callRecords[index].username,
+            (1 == genderV)
+                ? _callRecords[index].anthorpic
+                : _callRecords[index].userpic);
       } else {
         // 视频
-        onVideo(context, (1 == genderV) ? _callRecords[index].anthorid : _callRecords[index].user_id, (1 == genderV) ? _callRecords[index].anthorname : _callRecords[index].username, (1 == genderV) ? _callRecords[index].anthorpic : _callRecords[index].userpic);
+        onVideo(
+            context,
+            (1 == genderV)
+                ? _callRecords[index].anthorid
+                : _callRecords[index].user_id,
+            (1 == genderV)
+                ? _callRecords[index].anthorname
+                : _callRecords[index].username,
+            (1 == genderV)
+                ? _callRecords[index].anthorpic
+                : _callRecords[index].userpic);
       }
     }
   }
@@ -569,8 +628,8 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
     Future.delayed(Duration.zero, () async {
       await Permission.microphone.request();
       // if (isAudioPermiss) {
-        //如果授权同意
-        callReq(context, 0, uid, name, head_img);
+      //如果授权同意
+      callReq(context, 0, uid, name, head_img);
       // } else {
       //   openAppSettings();
       // }
@@ -582,8 +641,8 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
       await Permission.camera.request();
       await Permission.microphone.request();
       // if (isCameraPermiss && isAudioPermiss) {
-        //如果授权同意
-        callReq(context, 1, uid, name, head_img);
+      //如果授权同意
+      callReq(context, 1, uid, name, head_img);
       // } else {
       //   openAppSettings();
       // }
@@ -609,7 +668,8 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
   void callReq(BuildContext context, int type, int uid, String name,
       String head_img) async {
     try {
-      var res = await G.req.shop.callReq(tk: tkV, type: type, uid: uid, utype: (1 == genderV) ? 0 : 1);
+      var res = await G.req.shop.callReq(
+          tk: tkV, type: type, uid: uid, utype: (1 == genderV) ? 0 : 1);
       if (res.data != null) {
         String channel = res.data['data']['channel'];
         if (0 == type) {
@@ -669,12 +729,13 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
   @override
   onMessagesReceived(List<EMMessage> messages) {
     _incrementCounter(messages[0].body.toString());
-    print("message-接收"+messages[0].body.toString());
+    print("message-接收" + messages[0].body.toString());
     _reLoadAllConversations(widget.id);
   }
 
   void _incrementCounter(String msg) {
-    var fireDate = DateTime.fromMillisecondsSinceEpoch(DateTime.now().millisecondsSinceEpoch);
+    var fireDate = DateTime.fromMillisecondsSinceEpoch(
+        DateTime.now().millisecondsSinceEpoch);
     var localNotification = LocalNotification(
       id: 234,
       title: '甜腻',

@@ -185,7 +185,7 @@ class ReqUser {
   /// 版本更新
   Future<Response> upgradeVersioninfoReq({
     @required String tk,
-    // @required String curversion,
+    @required String curversion,
     // 1安卓， 2 IOS， 3 ipad
     @required int type,
   }) {
@@ -195,7 +195,7 @@ class ReqUser {
     Dio _versioniDio = Dio(_baseOptions);
     return _versioniDio
         .get(Constants.requestUrl + 'version?', queryParameters: {
-      // "curversion": curversion,
+      "curversion": curversion,
       "type": type,
     });
   }

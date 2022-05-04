@@ -121,14 +121,14 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
                 items: [
                   BottomNavigationBarItem(
                       icon: Image(
-                        height: 27,
-                        width: 27,
+                        height: 28,
+                        width: 28,
                         image: AssetImage('assets/images/main_normal.png'),
                         fit: BoxFit.fill,
                       ),
                       activeIcon: Image(
-                          height: 27,
-                          width: 27,
+                          height: 28,
+                          width: 28,
                           fit: BoxFit.fill,
                           image: AssetImage('assets/images/main_selected.png')),
                       title: Text(

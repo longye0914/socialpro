@@ -109,3 +109,9 @@
 #环信
 -keep class com.hyphenate.** {*;}
 -dontwarn  com.hyphenate.**
+
+#3.6.8 版本之后移除 apache，无需再添加
+-keep class internal.org.apache.http.entity.** {*;}
+#如果使用了实时音视频功能
+-keep class com.superrtc.** {*;}
+-dontwarn  com.superrtc.**

@@ -1,19 +1,19 @@
 import 'dart:io';
 
+import 'package:color_dart/color_dart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tnsocialpro/utils/global.dart';
 import 'package:tnsocialpro/widget/custom_appbar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:color_dart/color_dart.dart';
 import 'package:tnsocialpro/widget/row_noline.dart';
-
-import 'highopinionpage.dart';
 
 class AboutPage extends StatefulWidget {
   String tk;
+
   AboutPage({Key key, @required this.tk}) : super(key: key);
+
   _AboutPageState createState() => _AboutPageState();
 }
 
@@ -30,7 +30,6 @@ class _AboutPageState extends State<AboutPage> {
       //版本名
       _prefs = await SharedPreferences.getInstance();
       // 更新升级
-//      _getInstallMarket();
       _getVersion();
       setState(() {});
     });
@@ -50,8 +49,9 @@ class _AboutPageState extends State<AboutPage> {
   /// 获取版本更新信息
   getVersionInfo(int plattype, String localversion) async {
     try {
-      var res = await G.req.user.upgradeVersioninfoReq(type: 1);
-
+      var res = await G.req.user
+          .upgradeVersioninfoReq(curversion: _version, tk: widget.tk, type: 1);
+      print(res);
       var data = res.data;
 
       if (data == null) return;
@@ -62,7 +62,7 @@ class _AboutPageState extends State<AboutPage> {
       int isForceUp = data['data']['is_force_up'];
       _updateVersion = data['data']['cur_version'];
       isForceUpdate = (1 == isForceUp);
-      if (200 == code) {
+      if (20000 == code) {
         if (null == upremark || upremark.isEmpty) {
           contentStr.add('1.系统性能优化');
           contentStr.add('2.新增功能');
@@ -130,14 +130,13 @@ class _AboutPageState extends State<AboutPage> {
                                 fontWeight: FontWeight.w500),
                           ),
                           rightChild: Text(
-                            'V'  + ((null == _version) ? '1.0.0' : _version),
+                            'V' + ((null == _version) ? '1.0.0' : _version),
                             style: TextStyle(
                                 color: rgba(69, 65, 103, 1),
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400),
                           ),
-                          onPressed: () {
-                          }),
+                          onPressed: () {}),
                       Container(
                         color: rgba(239, 240, 242, 1),
                         margin: EdgeInsets.only(left: 30, right: 30),
