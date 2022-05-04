@@ -501,6 +501,7 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
     try {
       var res = await G.req.shop.getAllUserlistReq(
         tk: widget.tk,
+        currentPage: 1
       );
       setState(() {
         if (res.data != null) {

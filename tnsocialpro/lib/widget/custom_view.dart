@@ -903,7 +903,7 @@ class MainUserCard extends StatelessWidget {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                           color: rgba(245, 245, 245, 1),
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(4),
                             topRight: Radius.circular(4),
                             bottomLeft: Radius.circular(4),

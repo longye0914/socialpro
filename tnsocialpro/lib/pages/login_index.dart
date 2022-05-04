@@ -462,6 +462,7 @@ class _LoginIndexState extends State<LoginIndex>
       var res = await G.req.user.loginCodeReq(
           phone: _userEtControllerPhone.text.toString().trim(),
           smsCode: _userEtControllerCode.text.toString().trim());
+
       var data = res.data;
       // Navigator.pop(context);
       if (data == null) return G.toast('登录失败');
@@ -527,7 +528,7 @@ class _LoginIndexState extends State<LoginIndex>
           await G.toast('登录失败');
         } finally {}
       } else {
-        G.toast('登录失败');
+        G.toast(data['msg'] == null ? "登录失败" : data['msg']);
       }
     } catch (e) {
       G.toast('登录失败');
@@ -648,33 +649,17 @@ class _LoginIndexState extends State<LoginIndex>
     try {
       var res = await G.req.user
           .getCodeReq(phone: _userEtControllerPhone.text.toString().trim());
-      startTime = G.getTime();
-      countDown();
-      return;
-      // if (res.data == null) return;
-      // String access_token = res.data['access_token'];
-      // if (access_token.isNotEmpty) {
-      //   print(access_token);
-      //   validateCodeReq(access_token, _randomBit(6));
-      // }
-
+      print(res.data);
+      if (20000 == res.data["code"]) {
+        G.toast("验证码已发送");
+        startTime = G.getTime();
+        countDown();
+      } else {
+        G.toast(res.data["msg"] == null ? "验证码发送失败" : res.data["msg"]);
+      }
     } catch (e) {
       print(e);
     }
-  }
-
-  _randomBit(int len) {
-    String scopeF = '123456789'; //首位
-    String scopeC = '0123456789'; //中间
-    String result = '';
-    for (int i = 0; i < len; i++) {
-      if (i == 0) {
-        result = scopeF[Random().nextInt(scopeF.length)];
-      } else {
-        result = result + scopeC[Random().nextInt(scopeC.length)];
-      }
-    }
-    return result;
   }
 
   /// 短信验证码

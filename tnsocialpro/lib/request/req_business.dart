@@ -22,31 +22,24 @@ class ReqBusiness {
   }
 
   /// 通过手机号获取信息
-  Future<Response> getUserInfoByphone({
-    @required String tk,
-    @required String phone
-  }) {
+  Future<Response> getUserInfoByphone(
+      {@required String tk, @required String phone}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _userinfoDio = Dio(_baseOptions);
-    return _userinfoDio.get(
-      Constants.requestUrl + 'user/getUserInfoByphone?', queryParameters: {"phone": phone}
-    );
+    return _userinfoDio.get(Constants.requestUrl + 'user/getUserInfoByphone?',
+        queryParameters: {"phone": phone});
   }
 
   /// 获取用户详情
-  Future<Response> getUserDetailReq({
-    @required String tk,
-    @required int id
-  }) {
+  Future<Response> getUserDetailReq({@required String tk, @required int id}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _calendarDio = Dio(_baseOptions);
-    return _calendarDio.get(
-      Constants.requestUrl + 'user/getUserDetail?', queryParameters: {'id': id}
-    );
+    return _calendarDio.get(Constants.requestUrl + 'user/getUserDetail?',
+        queryParameters: {'id': id});
   }
 
   /// 更新甜甜券余额
@@ -59,10 +52,8 @@ class ReqBusiness {
       'Authorization': tk,
     });
     Dio _updatetianDio = Dio(_baseOptions);
-    FormData formdata = FormData.fromMap({
-      "tianticket": tianticket,
-      "type": type
-    });
+    FormData formdata =
+        FormData.fromMap({"tianticket": tianticket, "type": type});
     return _updatetianDio.post(Constants.requestUrl + 'user/uploadTianticket?',
         data: formdata);
   }
@@ -92,48 +83,44 @@ class ReqBusiness {
   }
 
   /// 更新提现余额
-  Future<Response> uploadWithdrawData({
-    @required String tk,
-    @required int tianticket,
-    @required String tianmon
-  }) {
+  Future<Response> uploadWithdrawData(
+      {@required String tk,
+      @required int tianticket,
+      @required String tianmon}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _updatetianDio = Dio(_baseOptions);
-    FormData formdata = FormData.fromMap({
-      "tianticket": tianticket,
-      "tianmon": tianmon
-    });
-    return _updatetianDio.post(Constants.requestUrl + 'user/uploadWithdrawData?',
+    FormData formdata =
+        FormData.fromMap({"tianticket": tianticket, "tianmon": tianmon});
+    return _updatetianDio.post(
+        Constants.requestUrl + 'user/uploadWithdrawData?',
         data: formdata);
   }
 
   /// 女 获取在线用户
-  Future<Response> getOnlineUserReq({
-    @required String tk,
-  }) {
+  Future<Response> getOnlineUserReq(
+      {@required String tk, @required int currentPage}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
+    print("page    $currentPage");
     Dio _calendarDio = Dio(_baseOptions);
     return _calendarDio.get(
       Constants.requestUrl + 'user/getOnlinelist',
+      queryParameters: {"currentPage": currentPage, "pageSize": 10},
     );
   }
 
   /// 女 获取最近来访
-  Future<Response> getVisitUserReq({
-    @required String tk,
-    @required int follow_id
-  }) {
+  Future<Response> getVisitUserReq(
+      {@required String tk, @required int follow_id}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _calendarDio = Dio(_baseOptions);
-    return _calendarDio.get(
-      Constants.requestUrl + 'user/getVisitlist?', queryParameters: {"follow_id": follow_id}
-    );
+    return _calendarDio.get(Constants.requestUrl + 'user/getVisitlist?',
+        queryParameters: {"follow_id": follow_id});
   }
 
   // 女 最近来访
@@ -155,59 +142,50 @@ class ReqBusiness {
   }
 
   /// 女 获取喜欢我的
-  Future<Response> getFanslistReq({
-    @required String tk,
-    @required int follow_id
-  }) {
+  Future<Response> getFanslistReq(
+      {@required String tk, @required int follow_id}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _calendarDio = Dio(_baseOptions);
-    return _calendarDio.get(
-      Constants.requestUrl + 'user/getFanslist?', queryParameters: {"follow_id": follow_id}
-    );
+    return _calendarDio.get(Constants.requestUrl + 'user/getFanslist?',
+        queryParameters: {"follow_id": follow_id});
   }
 
   /// 男 获取所有女用户列表
-  Future<Response> getAllUserlistReq({
-    @required String tk,
-  }) {
+  Future<Response> getAllUserlistReq(
+      {@required String tk, @required int currentPage}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _calendarDio = Dio(_baseOptions);
     return _calendarDio.get(
-      Constants.requestUrl + 'user/getAllUserlist',
+      Constants.requestUrl + 'user/getOnlinelist',
+      queryParameters: {"currentPage": currentPage, "pageSize": 10},
     );
   }
 
   /// 男 获取喜欢我的
-  Future<Response> getMyLikelistReq({
-    @required String tk,
-    @required int user_id
-  }) {
+  Future<Response> getMyLikelistReq(
+      {@required String tk, @required int user_id}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _calendarDio = Dio(_baseOptions);
-    return _calendarDio.get(
-        Constants.requestUrl + 'user/getLikeMelist?', queryParameters: {"user_id": user_id}
-    );
+    return _calendarDio.get(Constants.requestUrl + 'user/getLikeMelist?',
+        queryParameters: {"user_id": user_id});
   }
 
   /// 女 获取我的图片列表
-  Future<Response> getUserPictureReq({
-    @required String tk,
-    @required int user_id
-  }) {
+  Future<Response> getUserPictureReq(
+      {@required String tk, @required int user_id}) {
     print("获取我的图片列表");
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _calendarDio = Dio(_baseOptions);
-    return _calendarDio.get(
-        Constants.requestUrl + 'user/getUserPicture?', queryParameters: {"user_id": user_id}
-    );
+    return _calendarDio.get(Constants.requestUrl + 'user/getUserPicture?',
+        queryParameters: {"user_id": user_id});
   }
 
   // 上传图片
@@ -252,52 +230,41 @@ class ReqBusiness {
       'Authorization': tk,
     });
     Dio _calendarDio = Dio(_baseOptions);
-    return _calendarDio.get(
-        Constants.requestUrl + 'user/getUserRandomVoice?'
-    );
+    return _calendarDio.get(Constants.requestUrl + 'user/getUserRandomVoice?');
   }
 
   /// 女 获取音频列表
-  Future<Response> getUserVoiceReq({
-    @required String tk,
-    @required int user_id
-  }) {
+  Future<Response> getUserVoiceReq(
+      {@required String tk, @required int user_id}) {
     print("获取音频列表");
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _calendarDio = Dio(_baseOptions);
-    return _calendarDio.get(
-        Constants.requestUrl + 'user/getUserVoice?', queryParameters: {"user_id": user_id}
-    );
+    return _calendarDio.get(Constants.requestUrl + 'user/getUserVoice?',
+        queryParameters: {"user_id": user_id});
   }
 
   /// 主播/机器人 获取通话记录列表
-  Future<Response> getAnthorCalllistReq({
-    @required String tk,
-    @required int anthorid
-  }) {
+  Future<Response> getAnthorCalllistReq(
+      {@required String tk, @required int anthorid}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _calendarDio = Dio(_baseOptions);
-    return _calendarDio.get(
-        Constants.requestUrl + 'call/anthorCalllist?', queryParameters: {"anthorid": anthorid}
-    );
+    return _calendarDio.get(Constants.requestUrl + 'call/anthorCalllist?',
+        queryParameters: {"anthorid": anthorid});
   }
 
   /// 用户 获取通话记录列表
-  Future<Response> getUserCalllistReq({
-    @required String tk,
-    @required int user_id
-  }) {
+  Future<Response> getUserCalllistReq(
+      {@required String tk, @required int user_id}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _calendarDio = Dio(_baseOptions);
-    return _calendarDio.get(
-        Constants.requestUrl + 'call/userCalllist?', queryParameters: {"user_id": user_id}
-    );
+    return _calendarDio.get(Constants.requestUrl + 'call/userCalllist?',
+        queryParameters: {"user_id": user_id});
   }
 
   // 删除通话记录
@@ -309,9 +276,7 @@ class ReqBusiness {
       'Authorization': tk,
     });
     Dio _editInfoDio = Dio(_baseOptions);
-    FormData formData = FormData.fromMap({
-      "id": id
-    });
+    FormData formData = FormData.fromMap({"id": id});
     return _editInfoDio.post(Constants.requestUrl + 'call/deleteCalllist?',
         data: formData);
   }
@@ -327,11 +292,8 @@ class ReqBusiness {
       'Authorization': tk,
     });
     Dio _editInfoDio = Dio(_baseOptions);
-    FormData formData = FormData.fromMap({
-      "url": url,
-      "user_id": user_id,
-      "voicetime": voicetime
-    });
+    FormData formData = FormData.fromMap(
+        {"url": url, "user_id": user_id, "voicetime": voicetime});
     return _editInfoDio.post(Constants.requestUrl + 'user/addUserVoice?',
         data: formData);
   }
@@ -385,17 +347,17 @@ class ReqBusiness {
   }
 
   /// 获取是否对当前用户喜欢
-  Future<Response> getFollowUserStateReq({
-    @required String tk,
-    @required int follow_id
-  }) {
+  Future<Response> getFollowUserStateReq(
+      {@required String tk, @required int follow_id}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _articlelistDio = Dio(_baseOptions);
-    return _articlelistDio.get(Constants.requestUrl + 'user/getFollowUserState?', queryParameters: {
-      "follow_id": follow_id,
-    });
+    return _articlelistDio.get(
+        Constants.requestUrl + 'user/getFollowUserState?',
+        queryParameters: {
+          "follow_id": follow_id,
+        });
   }
 
   // 设置展示/取消展示
@@ -424,37 +386,37 @@ class ReqBusiness {
       'Authorization': tk,
     });
     Dio _articlelistDio = Dio(_baseOptions);
-    return _articlelistDio.get(Constants.requestUrl + 'banner/getBannerlist?', queryParameters: {
+    return _articlelistDio
+        .get(Constants.requestUrl + 'banner/getBannerlist?', queryParameters: {
       "type": 1,
     });
   }
 
   /// 语音/视频呼入
-  Future<Response> callReq({
-    @required String tk,
-    @required int type,
-    @required int utype,
-    @required int uid,
-    @required int
-  }) {
+  Future<Response> callReq(
+      {@required String tk,
+      @required int type,
+      @required int utype,
+      @required int uid,
+      @required int}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _callReqDio = Dio(_baseOptions);
-    FormData formData = FormData.fromMap({"type": type, "utype": utype, "uid": uid});
+    FormData formData =
+        FormData.fromMap({"type": type, "utype": utype, "uid": uid});
     return _callReqDio.post(Constants.requestUrl + 'call/callRequest?',
         data: formData);
   }
 
   /// 通话接听/挂断接口
-  Future<Response> answerReq({
-    @required String tk,
-    @required int type,
-    @required int time,
-    @required String channel,
-    @required int chat_type,
-    @required int uid
-  }) {
+  Future<Response> answerReq(
+      {@required String tk,
+      @required int type,
+      @required int time,
+      @required String channel,
+      @required int chat_type,
+      @required int uid}) {
     BaseOptions _answerReqOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
@@ -471,14 +433,14 @@ class ReqBusiness {
   }
 
   // 提交推送设备信息
-  Future<Response> submitDeviceInfoReq({
-    @required String tk,
-    @required String register_id,
-    @required String type,
-    @required String device_id,
-    @required int user_id
-    // @required String remark,
-  }) {
+  Future<Response> submitDeviceInfoReq(
+      {@required String tk,
+      @required String register_id,
+      @required String type,
+      @required String device_id,
+      @required int user_id
+      // @required String remark,
+      }) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
@@ -494,10 +456,8 @@ class ReqBusiness {
   }
 
   /// 退出 状态
-  Future<Response> modifyLogoutState({
-    @required String tk,
-    @required int statusval
-  }) {
+  Future<Response> modifyLogoutState(
+      {@required String tk, @required int statusval}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
@@ -505,14 +465,12 @@ class ReqBusiness {
       "statusval": statusval,
     });
     Dio _logOutDio = Dio(_baseOptions);
-    return _logOutDio.post(Constants.requestUrl + 'user/modifyLogoutState?', data: formdata);
+    return _logOutDio.post(Constants.requestUrl + 'user/modifyLogoutState?',
+        data: formdata);
   }
 
   /// 退出登陆
-  Future<Response> logOut({
-    @required String tk,
-    @required String phone
-  }) {
+  Future<Response> logOut({@required String tk, @required String phone}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
@@ -601,19 +559,13 @@ class ReqBusiness {
   }
 
   // 编辑个人生日
-  Future<Response> editBirthReq({
-    @required String tk,
-    @required String birthday,
-    @required String age
-  }) {
+  Future<Response> editBirthReq(
+      {@required String tk, @required String birthday, @required String age}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _editInfoDio = Dio(_baseOptions);
-    FormData formData = FormData.fromMap({
-      "birthday": birthday,
-      "age": age
-    });
+    FormData formData = FormData.fromMap({"birthday": birthday, "age": age});
     return _editInfoDio.post(Constants.requestUrl + 'user/editUserBirth?',
         data: formData);
   }
@@ -648,7 +600,8 @@ class ReqBusiness {
       "id": id,
       "type": type,
     });
-    return _editInfoDio.post(Constants.requestUrl + 'user/updateUserBackorFont?',
+    return _editInfoDio.post(
+        Constants.requestUrl + 'user/updateUserBackorFont?',
         data: formData);
   }
 
@@ -668,7 +621,6 @@ class ReqBusiness {
         data: formData);
   }
 
-
   // 编辑个人签名
   Future<Response> editSinginfoReq({
     @required String tk,
@@ -686,151 +638,118 @@ class ReqBusiness {
   }
 
   // 编辑个人头像
-  Future<Response> editHeadimgReq({
-    @required String tk,
-    @required String userpic
-  }) {
+  Future<Response> editHeadimgReq(
+      {@required String tk, @required String userpic}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _editInfoDio = Dio(_baseOptions);
-    FormData formData = FormData.fromMap({
-      "userpic": userpic
-    });
+    FormData formData = FormData.fromMap({"userpic": userpic});
     return _editInfoDio.post(Constants.requestUrl + 'user/uploadAvatar?',
         data: formData);
   }
 
   // 编辑个人介绍
-  Future<Response> editInfoReq({
-    @required String tk,
-    @required String myselfintro
-  }) {
+  Future<Response> editInfoReq(
+      {@required String tk, @required String myselfintro}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _editInfoDio = Dio(_baseOptions);
-    FormData formData = FormData.fromMap({
-      "myselfintro": myselfintro
-    });
+    FormData formData = FormData.fromMap({"myselfintro": myselfintro});
     return _editInfoDio.post(Constants.requestUrl + 'user/editUserInfo?',
         data: formData);
   }
 
   // 资料全部更新状态
-  Future<Response> updateInfoReq({
-    @required String tk,
-    @required int infoflag
-  }) {
+  Future<Response> updateInfoReq(
+      {@required String tk, @required int infoflag}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _editInfoDio = Dio(_baseOptions);
-    FormData formData = FormData.fromMap({
-      "infoflag": infoflag
-    });
+    FormData formData = FormData.fromMap({"infoflag": infoflag});
     return _editInfoDio.post(Constants.requestUrl + 'user/updateInfoAll?',
         data: formData);
   }
 
   // 我的图片状态
-  Future<Response> updatePicTaskReq({
-    @required String tk,
-    @required int picflag
-  }) {
+  Future<Response> updatePicTaskReq(
+      {@required String tk, @required int picflag}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _editInfoDio = Dio(_baseOptions);
-    FormData formData = FormData.fromMap({
-      "picflag": picflag
-    });
+    FormData formData = FormData.fromMap({"picflag": picflag});
     return _editInfoDio.post(Constants.requestUrl + 'user/updatePictureTask?',
         data: formData);
   }
 
   // 我的声音录入状态
-  Future<Response> updateVoiceTaskReq({
-    @required String tk,
-    @required int voiceflag
-  }) {
+  Future<Response> updateVoiceTaskReq(
+      {@required String tk, @required int voiceflag}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _editInfoDio = Dio(_baseOptions);
-    FormData formData = FormData.fromMap({
-      "voiceflag": voiceflag
-    });
+    FormData formData = FormData.fromMap({"voiceflag": voiceflag});
     return _editInfoDio.post(Constants.requestUrl + 'user/updateVoiceTask?',
         data: formData);
   }
 
   // 接单状态
-  Future<Response> updateOrderTaskReq({
-    @required String tk,
-    @required int taskflag
-  }) {
+  Future<Response> updateOrderTaskReq(
+      {@required String tk, @required int taskflag}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _editInfoDio = Dio(_baseOptions);
-    FormData formData = FormData.fromMap({
-      "taskflag": taskflag
-    });
+    FormData formData = FormData.fromMap({"taskflag": taskflag});
     return _editInfoDio.post(Constants.requestUrl + 'user/updateOrderTask?',
         data: formData);
   }
 
   // 视频接单设置
-  Future<Response> videoSetReq({
-    @required String tk,
-    @required String videoset,
-    @required int videosetflag
-  }) {
+  Future<Response> videoSetReq(
+      {@required String tk,
+      @required String videoset,
+      @required int videosetflag}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _editInfoDio = Dio(_baseOptions);
-    FormData formData = FormData.fromMap({
-      "videoset": videoset,
-      "videosetflag": videosetflag
-    });
+    FormData formData =
+        FormData.fromMap({"videoset": videoset, "videosetflag": videosetflag});
     return _editInfoDio.post(Constants.requestUrl + 'user/updateVideoSet?',
         data: formData);
   }
 
   // 音频接单设置
-  Future<Response> voiceSetReq({
-    @required String tk,
-    @required String voiceset,
-    @required int voicesetflag
-  }) {
+  Future<Response> voiceSetReq(
+      {@required String tk,
+      @required String voiceset,
+      @required int voicesetflag}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _editInfoDio = Dio(_baseOptions);
-    FormData formData = FormData.fromMap({
-      "voiceset": voiceset,
-      "voicesetflag": voicesetflag
-    });
+    FormData formData =
+        FormData.fromMap({"voiceset": voiceset, "voicesetflag": voicesetflag});
     return _editInfoDio.post(Constants.requestUrl + 'user/updateVoiceSet?',
         data: formData);
   }
 
   // 私聊接单设置
-  Future<Response> priimSetReq({
-    @required String tk,
-    @required String priimset,
-    @required int priimsetflag
-  }) {
+  Future<Response> priimSetReq(
+      {@required String tk,
+      @required String priimset,
+      @required int priimsetflag}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _editInfoDio = Dio(_baseOptions);
-    FormData formData = FormData.fromMap({
-      "priimset": priimset,
-      "priimsetflag": priimsetflag
-    });
+    FormData formData =
+        FormData.fromMap({"priimset": priimset, "priimsetflag": priimsetflag});
     return _editInfoDio.post(Constants.requestUrl + 'user/updatePriSet?',
         data: formData);
   }
@@ -872,14 +791,13 @@ class ReqBusiness {
   }
 
   // 创建提现订单
-  Future<Response> createWithdraworderReq({
-    @required String tk,
-    @required String commodity,
-    @required String amount,
-    @required int userId,
-    @required String name,
-    @required String zfbName
-  }) {
+  Future<Response> createWithdraworderReq(
+      {@required String tk,
+      @required String commodity,
+      @required String amount,
+      @required int userId,
+      @required String name,
+      @required String zfbName}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
@@ -982,59 +900,47 @@ class ReqBusiness {
   }
 
   /// 女 提现明细列表
-  Future<Response> getWithdrawlistReq({
-    @required String tk,
-    @required int userid
-  }) {
+  Future<Response> getWithdrawlistReq(
+      {@required String tk, @required int userid}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _calendarDio = Dio(_baseOptions);
-    return _calendarDio.get(
-        Constants.requestUrl + 'pay/getWithdrawlist?', queryParameters: {"userid": userid}
-    );
+    return _calendarDio.get(Constants.requestUrl + 'pay/getWithdrawlist?',
+        queryParameters: {"userid": userid});
   }
 
   /// 女 收入明细列表
-  Future<Response> getIncomeItemlistReq({
-    @required String tk,
-    @required int anthorid
-  }) {
+  Future<Response> getIncomeItemlistReq(
+      {@required String tk, @required int anthorid}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _calendarDio = Dio(_baseOptions);
-    return _calendarDio.get(
-        Constants.requestUrl + 'pay/getIncomeItemlist?', queryParameters: {"anthorid": anthorid}
-    );
+    return _calendarDio.get(Constants.requestUrl + 'pay/getIncomeItemlist?',
+        queryParameters: {"anthorid": anthorid});
   }
 
   /// 男 充值明细列表
-  Future<Response> getRechargeDetail({
-    @required String tk,
-    @required int userid
-  }) {
+  Future<Response> getRechargeDetail(
+      {@required String tk, @required int userid}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _calendarDio = Dio(_baseOptions);
-    return _calendarDio.get(
-        Constants.requestUrl + 'pay/getRechargeDetail?', queryParameters: {"userid": userid}
-    );
+    return _calendarDio.get(Constants.requestUrl + 'pay/getRechargeDetail?',
+        queryParameters: {"userid": userid});
   }
 
   /// 女 支出明细列表
-  Future<Response> getPayoutItemlist({
-    @required String tk,
-    @required int user_id
-  }) {
+  Future<Response> getPayoutItemlist(
+      {@required String tk, @required int user_id}) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _calendarDio = Dio(_baseOptions);
-    return _calendarDio.get(
-        Constants.requestUrl + 'pay/getPayoutItemlist?', queryParameters: {"user_id": user_id}
-    );
+    return _calendarDio.get(Constants.requestUrl + 'pay/getPayoutItemlist?',
+        queryParameters: {"user_id": user_id});
   }
 
   /// 声音模版
@@ -1045,9 +951,7 @@ class ReqBusiness {
       'Authorization': tk,
     });
     Dio _calendarDio = Dio(_baseOptions);
-    return _calendarDio.get(
-        Constants.requestUrl + 'user/getVoicetemplelist?'
-    );
+    return _calendarDio.get(Constants.requestUrl + 'user/getVoicetemplelist?');
   }
 
   /// 签名模版
@@ -1058,8 +962,6 @@ class ReqBusiness {
       'Authorization': tk,
     });
     Dio _calendarDio = Dio(_baseOptions);
-    return _calendarDio.get(
-        Constants.requestUrl + 'user/getSigntemplelist?'
-    );
+    return _calendarDio.get(Constants.requestUrl + 'user/getSigntemplelist?');
   }
 }
