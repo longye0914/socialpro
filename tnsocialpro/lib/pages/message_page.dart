@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:im_flutter_sdk/im_flutter_sdk.dart';
+import 'package:jpush_flutter/jpush_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -225,8 +226,21 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
     // getCallRecordlistReq();
     // 添加环信回调监听
     EMClient.getInstance.chatManager.addListener(this);
+    print( EMClient.getInstance.currentUsername);
+
+
+    try {
+      Future ff =  EMClient.getInstance.chatManager.loadAllConversations();
+
+      print(ff);
+    } on EMError catch (e) {
+      print('操作失败，原因是: $e');
+    }
+
     _reLoadAllConversations(widget.id);
+
     notifier = eventBus.on<EventBusManager>().listen((event) {
+      print("notifier事件来了");
       if (event.eventKey == EventBusManager.updateConversaitonsList) {
         _reLoadAllConversations(widget.id);
       }
@@ -317,6 +331,7 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
 
   /// 更新会话列表
   void _reLoadAllConversations(int id) async {
+    print("更新会话列表"+id.toString());
     if (1 == id) {
       // 消息
       try {
@@ -326,7 +341,6 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
           try {
             var res = await G.req.shop
                 .getUserInfoByphone(tk: tkV, phone: emConversation.id);
-
             if (res.data == null) return;
             int code = res.data['code'];
             if (20000 == code) {
@@ -337,7 +351,9 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
               emConversation.ext = map;
               _conversationsList.add(emConversation);
             }
-          } catch (e) {}
+          } catch (e) {
+            print(e);
+          }
         }
         setState(() {
           _refreshController.refreshCompleted();
@@ -652,8 +668,23 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
 
   @override
   onMessagesReceived(List<EMMessage> messages) {
+    _incrementCounter(messages[0].body.toString());
     print("message-接收"+messages[0].body.toString());
     _reLoadAllConversations(widget.id);
+  }
+
+  void _incrementCounter(String msg) {
+    var fireDate = DateTime.fromMillisecondsSinceEpoch(DateTime.now().millisecondsSinceEpoch);
+    var localNotification = LocalNotification(
+      id: 234,
+      title: '甜腻',
+      buildId: 1,
+      content: msg,
+      fireTime: fireDate,
+      subtitle: '一个测试',
+    );
+    JPush jj = new JPush();
+    jj.sendLocalNotification(localNotification);
   }
 
   @override

@@ -268,35 +268,11 @@ class _WithdrawAccountPageState extends State<WithdrawAccountPage> {
       if (20000 == code) {
         // int orderNo = data['data'];
         // _doAliWithdraw(orderNo);
-
-        _uploadWithdrawData(amount);
         myinfolistBus.fire(new MyinfolistEvent(true));
         Navigator.pop(context);
         Fluttertoast.showToast(msg: '提现申请成功');
       } else {
         Fluttertoast.showToast(msg: '提现申请失败');
-      }
-    } catch (e) {
-    }
-  }
-
-  // 更新提现余额
-  _uploadWithdrawData(String monval) async {
-    int remon = (double.parse(widget.tianMon)*10).toInt() - (double.parse(monval)*10).toInt();
-    String remind = (remon / 10).toString();
-    int tiantianRemine = widget.tianticket - (double.parse(monval)*100).toInt();
-    try {
-      var res = await G.req.shop.uploadWithdrawData(
-          tk: widget.tk,
-          tianticket: tiantianRemine,
-          tianmon: remind
-      );
-      var data = res.data;
-      // Navigator.pop(context);
-      if (data == null) return;
-      int code = data['code'];
-      if (20000 == code) {
-      } else {
       }
     } catch (e) {
     }
@@ -317,7 +293,6 @@ class _WithdrawAccountPageState extends State<WithdrawAccountPage> {
       if (data == null) return;
       int code = data['code'];
       if (20000 == code) {
-        _uploadWithdrawData(widget.tianmonStr);
         myinfolistBus.fire(new MyinfolistEvent(true));
         Fluttertoast.showToast(msg: '提现成功');
         Navigator.pop(context);
@@ -343,7 +318,6 @@ class _WithdrawAccountPageState extends State<WithdrawAccountPage> {
       if (data == null) return;
       int code = data['code'];
       if (20000 == code) {
-        _uploadWithdrawData(widget.tianmonStr);
         myinfolistBus.fire(new MyinfolistEvent(true));
         Fluttertoast.showToast(msg: '提现成功');
         Navigator.pop(context);

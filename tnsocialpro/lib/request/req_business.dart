@@ -11,6 +11,7 @@ class ReqBusiness {
   Future<Response> getUserInfoReq({
     @required String tk,
   }) {
+    print("获取登陆者信息");
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
@@ -199,6 +200,7 @@ class ReqBusiness {
     @required String tk,
     @required int user_id
   }) {
+    print("获取我的图片列表");
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
@@ -260,6 +262,7 @@ class ReqBusiness {
     @required String tk,
     @required int user_id
   }) {
+    print("获取音频列表");
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });

@@ -49,8 +49,8 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
   JPush jpush = new JPush();
   String registration_id, device_id;
   SharedPreferences prefs;
-  final defaultColor = rgba(183, 183, 183, 1);
-  final activeColor = rgba(254, 107, 0, 1);
+  final defaultColor = rgba(150, 148, 166, 100);
+  final activeColor =  rgba(69, 65, 163, 100);
   String sn;
   String path, _version, upremark, apkpath, _updateVersion;
   bool isForceUpdate = false;

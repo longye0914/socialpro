@@ -52,20 +52,6 @@ class _BigImgPageState extends State<BigImgPage> {
                 NRow(
                   color: rgba(0, 0, 0, 1),
                   height: 40,
-                  leftChild: GestureDetector(
-                    child: Container(
-                      width: 9,
-                      height: 16,
-                      margin: EdgeInsets.only(left: 14),
-                      alignment: Alignment.centerLeft,
-                      child: Image.asset(
-                        'assets/images/icon_greyback.png',
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
                   centerChild: Container(
                     alignment: Alignment.center,
                     child: Text(widget.indexs.toString() + '/' + pictureList.length.toString(),
@@ -118,9 +104,13 @@ class _BigImgPageState extends State<BigImgPage> {
         //     color: rgba(245, 245, 245, 1)),
         alignment: Alignment.center,
         child: InteractiveViewer(
-          child: Image.network(pictureList[widget.indexs - 1].url, height: 485,
-              width: double.infinity, fit: BoxFit.contain),
-        ),
+          child:GestureDetector (
+            onTap: ()=>Navigator.pop(context),
+            child: Image.network(pictureList[widget.indexs - 1].url, height: 485,
+                width: double.infinity, fit: BoxFit.contain),
+          ),
+          )
+
         // new Image(
         //   image: new NetworkImage(pictureList[widget.indexs - 1].url),
         // ),

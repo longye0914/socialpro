@@ -41,7 +41,7 @@ class _GirlDetailPageState extends State<GirlDetailPage> {
   bool _disposed;
   int secondsPassed;
   int secondsPassed2 = -1;
-  Timer timer;
+  Timer timer,timer1;
   static const duration = const Duration(seconds: 1);
   bool isActive = false;
   final List<Image> _assetList = [Image.asset('assets/images/left_voice_1.png'), Image.asset('assets/images/left_voice_2.png'), Image.asset('assets/images/left_voice_3.png')];
@@ -49,21 +49,29 @@ class _GirlDetailPageState extends State<GirlDetailPage> {
   // 显示的 image
   int showIndex = 0;
 
+
+  @override
+  void dispose() {
+    if(timer1!=null && timer1.isActive){
+      timer1.cancel();
+    }
+    if(timer!=null && timer.isActive){
+      timer.cancel();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+
     Future.delayed(Duration.zero, () async {
       _prefs = await SharedPreferences.getInstance();
     });
     _disposed = false;
-    if (timer == null) {
-      timer = Timer.periodic(duration, (Timer t) {
+    timer ??= Timer.periodic(duration, (Timer t) {
         handleTick();
       });
-    }
-    Future.delayed(Duration(milliseconds: 500), () {
-      _updateImage(_assetList.length, Duration(milliseconds: 500));
-    });
+
     audioPlayer = AudioPlayer(/*mode: PlayerMode.MEDIA_PLAYER*/);
     getUserDetail();
     getFollowUserState();
@@ -72,10 +80,9 @@ class _GirlDetailPageState extends State<GirlDetailPage> {
   }
 
   _updateImage(int count, Duration millisecond) {
-    Future.delayed(millisecond, () {
-      // if (_disposed) return;
-      // if (0 == secondsPassed2) return;
+    timer1 = Timer(millisecond, (){
       setState(() {
+        print("_updateImage");
         showIndex = _assetList.length - count--;
       });
       if (count < 1) {
@@ -83,6 +90,7 @@ class _GirlDetailPageState extends State<GirlDetailPage> {
       }
       _updateImage(count, millisecond);
       setState(() {
+        print("_updateImage2");
       });
     });
   }
@@ -99,26 +107,32 @@ class _GirlDetailPageState extends State<GirlDetailPage> {
         }
       }//需要更新UI
       setState(() {
+        print("handleTick");
       });
     }
   }
 
   play(String uslStr) async {
-//    await audioPlayer.setReleaseMode(ReleaseMode.LOOP);
     if (0 == secondsPassed2) {
       secondsPassed2 = secondsPassed;
     }
-    await audioPlayer.play(uslStr, isLocal: false);
     isActive = true;
-    setState(() {});
+    await audioPlayer.play(uslStr, isLocal: false);
+    _updateImage(_assetList.length, const Duration(milliseconds: 500));
+    setState(() {
+      print("play");
+    });
   }
 
   stop() async {
-//    await audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
     await audioPlayer.stop();
     isActive = false;
+    timer1.cancel();
     // audioPlayer = null;
-    setState(() {});
+    setState(() {
+      showIndex = _assetList.length-1;
+      print("stop");
+    });
   }
 
   @override
@@ -151,12 +165,12 @@ class _GirlDetailPageState extends State<GirlDetailPage> {
                     height: 330,
                     width: double.infinity,
                     // alignment: Alignment.topRight,
-                    decoration: new BoxDecoration(
+                    decoration: BoxDecoration(
                       color: Colors.grey,
                       // border: new Border.all(width: 2.0, color: Colors.transparent),
-                      borderRadius: new BorderRadius.all(new Radius.circular(0)),
-                      image: new DecorationImage(
-                          image: new NetworkImage((null == myInfoData || null == myInfoData.userpic || myInfoData.userpic.isEmpty) ? '' : myInfoData.userpic),
+                      borderRadius: const BorderRadius.all(Radius.circular(0)),
+                      image: DecorationImage(
+                          image:  NetworkImage((null == myInfoData || null == myInfoData.userpic || myInfoData.userpic.isEmpty) ? '' : myInfoData.userpic),
                           fit: BoxFit.cover
                         //这里是从assets静态文件中获取的，也可以new NetworkImage(）从网络上获取
                         // centerSlice: new Rect.fromLTRB(270.0, 180.0, 1360.0, 730.0),
@@ -173,9 +187,10 @@ class _GirlDetailPageState extends State<GirlDetailPage> {
                               Navigator.pop(context);
                             },
                             child: Container(
-                              width: 8.9,
-                              height: 16,
+                              width: 40,
+                              height: 40,
                               alignment: Alignment.topLeft,
+                              decoration: const BoxDecoration(color: Colors.transparent),
                               margin: EdgeInsets.only(top: 50, left: 20),
                               child: Image.asset(
                                 'assets/images/icon_whiteback.png',
@@ -317,11 +332,12 @@ class _GirlDetailPageState extends State<GirlDetailPage> {
                                             child: (secondsPassed2 > 0) ? IndexedStack(
                                               index: showIndex,
                                               children: _assetList,
-                                            ) : Image.asset('assets/images/left_voice_3.png', height: 22, width: 22, fit: BoxFit.cover,),
+                                            ) : Image.asset('assets/images/left_voice_3.png', height: 22, width: 22, fit: BoxFit.cover),
                                           ),
                                           Container(
                                             margin: EdgeInsets.only(top: 8),//voicetime
-                                            child: Text((-1 == secondsPassed2 ? '0' : secondsPassed2.toString()) + 's/' + secondsPassed.toString() + 's',
+                                            child: Text(secondsPassed.toString() + 's',
+                                                textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontSize: 15, color: Colors.white)),
                                           ),
@@ -880,6 +896,7 @@ class _GirlDetailPageState extends State<GirlDetailPage> {
         int code = res.data['code'];
         if (20000 == code) {
           setState(() {
+            print("获取影虎详情");
             myInfoData = MyInfoParent.fromJson(res.data).data;
             visitUserReq();
           });
@@ -906,6 +923,7 @@ class _GirlDetailPageState extends State<GirlDetailPage> {
         int code = res.data['code'];
         likestate = res.data['data'];
         setState(() {
+          print("获取喜欢状态");
         });
       }
     } catch (e) {}
@@ -954,12 +972,21 @@ class _GirlDetailPageState extends State<GirlDetailPage> {
         int code = res.data['code'];
         if (20000 == code) {
           setState(() {
+            print("获取用户图片");
             pictureList.clear();
             pictureList.addAll(PicturelistParent.fromJson(res.data).data);
           });
         }
       }
     } catch (e) {}
+  }
+
+
+  @override
+  void setState(VoidCallback fn) {
+    if(mounted){super.setState(fn);}else{
+      print(fn);
+    }
   }
 
   /// 获取用户音频
@@ -981,6 +1008,7 @@ class _GirlDetailPageState extends State<GirlDetailPage> {
             }
           }
           setState(() {
+            print("获取用户音频");
           });
         }
       }

@@ -55,8 +55,6 @@ class _RechargePageState extends State<RechargePage> {
             isUppic = true;
             // 更新订单
             _updateOrder(ordernoV);
-            // 更新甜甜券
-            _uploadTianticket(tianV);
             Fluttertoast.showToast(msg: '充值成功');
           } else {
             // Fluttertoast.showToast(msg: '充值失败');
@@ -710,26 +708,6 @@ class _RechargePageState extends State<RechargePage> {
     }
   }
 
-  // 更新甜甜券
-  _uploadTianticket(String tianticket) async {
-    int tianTotal = tianticketVal + int.parse(tianticket);
-    try {
-      var res = await G.req.shop.uploadTianticket(
-          tk: widget.tk,
-          tianticket: tianTotal,
-          type: 2
-      );
-      var data = res.data;
-      if (data == null) return;
-      int code = data['code'];
-      if (20000 == code) {
-        Navigator.pop(context);
-      } else {
-      }
-    } catch (e) {
-    }
-  }
-
   // 执行支付宝支付
   _doAliPay(int orderno, String tianVal) async {
     try {
@@ -752,8 +730,6 @@ class _RechargePageState extends State<RechargePage> {
               isUppic = true;
               // 更新订单
               _updateOrder(orderno);
-              // 更新甜甜券
-              _uploadTianticket(tianVal);
               Fluttertoast.showToast(msg: '充值成功');
             } else {
               // Fluttertoast.showToast(msg: '充值失败');
