@@ -138,7 +138,7 @@ class _MyinfoPageState extends State<MyinfoPage> {
   @override
   void dispose() {
     if (mounted) {
-      myinfolistBus.fire(new MyinfolistEvent(true));
+      myinfolistBus.fire(MyinfolistEvent(true));
     }
     provinceScrollController.dispose();
     cityScrollController.dispose();

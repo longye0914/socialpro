@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -265,6 +267,7 @@ class _FindingTabViewState extends State<FindingTabView>
   void initState() {
     _isLoading = true;
     _loadMore = false;
+    print("init_state");
     getUserInfo();
     Future.delayed(Duration.zero, () async {
       _prefs = await SharedPreferences.getInstance();
@@ -293,7 +296,7 @@ class _FindingTabViewState extends State<FindingTabView>
             .getOnlineUserReq(tk: tkV, currentPage: _currentPage);
         setState(() {
           if (res.data != null) {
-            if(UserlistParent.fromJson(res.data).data.isEmpty){
+            if (UserlistParent.fromJson(res.data).data.isEmpty) {
               _layoutState = LoadState.State_Success;
               return;
             }
@@ -393,66 +396,66 @@ class _FindingTabViewState extends State<FindingTabView>
     //     ),
     //   );
     // } else {
-      return Container(
-        color: rgba(246, 243, 249, 1),
-        child: EasyRefresh(
-            header: MaterialHeader(
-              key: _headerKey,
-            ),
-            footer: MaterialFooter(
-              key: _footerKey,
-            ),
-            child: ListView(
-              children: <Widget>[
-                // 轮播图
-                (1 == widget.id)
-                    ? ((bannerListDatas.isEmpty)
-                        ? Container()
-                        : Container(
-                            // color: rgba(246, 243, 249, 1),
-                            margin: EdgeInsets.only(
-                                left: 15, right: 15, bottom: 20),
-                            height: 84,
-                            width: double.infinity,
-                            child: CustomSwiper(
-                              bannerListDatas,
-                            ),
-                          ))
-                    : Container(),
-                (2 == widget.id)
-                    ? CardVisitUser(
-                        articleData: visitUser,
-                        tk: tkV,
-                        gender: genderV,
-                        headimg: headImgV,
-                        myInfo: myInfoData)
-                    : (1 == widget.id)
-                        ? CardOnlineUser(
-                            articleData: onlineUser,
-                            tk: tkV,
-                            gender: genderV,
-                            headimg: headImgV,
-                            myInfo: myInfoData)
-                        : CardFansUser(
-                            articleData: fansUser,
-                            tk: tkV,
-                            gender: genderV,
-                            headimg: headImgV,
-                            myInfo: myInfoData)
-              ],
-            ),
-            onRefresh: () async {
-              _isLoading = true;
-              _currentPage = 1;
-              _loadMore = false;
-              loadData(widget.id);
-            },
-            onLoad: () async {
-              _isLoading = true;
-              _loadMore = true;
-              loadData(widget.id);
-            }),
-      );
+    return Container(
+      color: rgba(246, 243, 249, 1),
+      child: EasyRefresh(
+          header: MaterialHeader(
+            key: _headerKey,
+          ),
+          footer: MaterialFooter(
+            key: _footerKey,
+          ),
+          child: ListView(
+            children: <Widget>[
+              // 轮播图
+              (1 == widget.id)
+                  ? ((bannerListDatas.isEmpty)
+                      ? Container()
+                      : Container(
+                          // color: rgba(246, 243, 249, 1),
+                          margin:
+                              EdgeInsets.only(left: 15, right: 15, bottom: 20),
+                          height: 84,
+                          width: double.infinity,
+                          child: CustomSwiper(
+                            bannerListDatas,
+                          ),
+                        ))
+                  : Container(),
+              (2 == widget.id)
+                  ? CardVisitUser(
+                      articleData: visitUser,
+                      tk: tkV,
+                      gender: genderV,
+                      headimg: headImgV,
+                      myInfo: myInfoData)
+                  : (1 == widget.id)
+                      ? CardOnlineUser(
+                          articleData: onlineUser,
+                          tk: tkV,
+                          gender: genderV,
+                          headimg: headImgV,
+                          myInfo: myInfoData)
+                      : CardFansUser(
+                          articleData: fansUser,
+                          tk: tkV,
+                          gender: genderV,
+                          headimg: headImgV,
+                          myInfo: myInfoData)
+            ],
+          ),
+          onRefresh: () async {
+            _isLoading = true;
+            _currentPage = 1;
+            _loadMore = false;
+            loadData(widget.id);
+          },
+          onLoad: () async {
+            _isLoading = true;
+            _loadMore = true;
+            loadData(widget.id);
+          }),
+    );
     // }
   }
 
@@ -495,6 +498,7 @@ class _FindingTabViewState extends State<FindingTabView>
   /// 获取个人信息
   getUserInfo() async {
     try {
+      print("maingirl_page");
       var res = await G.req.shop.getUserInfoReq(
         tk: tkV,
       );
@@ -506,7 +510,9 @@ class _FindingTabViewState extends State<FindingTabView>
           });
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -520,9 +526,13 @@ class _FindingTabViewState extends State<FindingTabView>
     getUserInfo();
   }
 
+  StreamSubscription<UserRefreshEvent> userInfoSusc;
+  StreamSubscription<MyVoiceEvent> voiceInfoSusc;
+  StreamSubscription<MyinfolistEvent> myInfoSusc;
+
   //监听Bus events
   void _listen() {
-    userRefreshBus.on<UserRefreshEvent>().listen((event) {
+    userInfoSusc ??= userRefreshBus.on<UserRefreshEvent>().listen((event) {
       setState(() {
         var timeOr = _prefs.getInt('timeEnjoy');
         var timeVal = DateTime.now().millisecondsSinceEpoch;
@@ -533,31 +543,14 @@ class _FindingTabViewState extends State<FindingTabView>
         }
       });
     });
-    // eventMaintabBus.on<MainTabEvent>().listen((event) {
-    //   setState(() {
-    //     var timeOr = _prefs.getInt('timeEnjoy2');
-    //     var timeVal = DateTime.now().millisecondsSinceEpoch;
-    //     var timeListent = (null == timeOr) ? timeVal : (timeVal - timeOr);
-    //     if (null == timeOr || timeListent > 800) {
-    //       _prefs.setInt('timeEnjoy2', timeVal);
-    //       loadData(event.index);
-    //     }
-    //   });
-    // });
-    myinfolistBus.on<MyinfolistEvent>().listen((event) {
+    voiceInfoSusc ??= myvoiceBus.on<MyVoiceEvent>().listen((event) {
       setState(() {
         getUserInfo();
       });
     });
-    myvoiceBus.on<MyVoiceEvent>().listen((event) {
-      setState(() {
-        getUserInfo();
-      });
-    });
-    myinfolistBus.on<MyinfolistEvent>().listen((event) {
-      setState(() {
-        getUserInfo();
-      });
+
+    myInfoSusc ??= myinfolistBus.on<MyinfolistEvent>().listen((event) {
+      getUserInfo();
     });
   }
 }

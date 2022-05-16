@@ -584,9 +584,8 @@ class MinePageState extends State<MinePage> {
       });
     });
     myinfolistBus.on<MyinfolistEvent>().listen((event) {
-      setState(() {
-        getUserInfo(true);
-      });
+      print("myinfolistBus-mine-page--");
+      getUserInfo(true);
     });
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:color_dart/color_dart.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -1501,6 +1503,13 @@ class _MineGirlPageState extends State<MineGirlPage> {
     } catch (e) {}
   }
 
+  StreamSubscription<MyinfolistEvent> _infoSubsription;
+  @override
+  void dispose() {
+    _infoSubsription.cancel();
+    super.dispose();
+  }
+
   //监听Bus events
   void _listen() {
     modifyFeedbackBus.on<ModifyFeedEvent>().listen((event) {
@@ -1524,8 +1533,8 @@ class _MineGirlPageState extends State<MineGirlPage> {
         _prefs.setBool('isRegister', false);
       });
     });
-    myinfolistBus.on<MyinfolistEvent>().listen((event) {
-      print("myinfolistBus--");
+    _infoSubsription = myinfolistBus.on<MyinfolistEvent>().listen((event) {
+      print("myinfolistBus-minegirl-");
       getUserInfo(event.isRefresh);
     });
   }

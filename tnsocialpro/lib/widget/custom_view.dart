@@ -954,25 +954,25 @@ class MainUserCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
-                            // margin: EdgeInsets.only(left: 23),
-                            child: Text('离线',
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: rgba(150, 148, 166, 1),
-                                    fontWeight: FontWeight.w400)),
-                          ),
-                          Container(
-                            decoration: new BoxDecoration(
-                              // border: new Border.all(color: Colors.white, width: 6), // 边色与边宽度
-                              color: Colors.grey, // 底色
-                              shape: BoxShape.circle, // 默认值也是矩形
-                            ),
-                            margin: EdgeInsets.only(left: 5, right: 20),
-                            height: 6,
-                            width: 6,
-                            alignment: Alignment.center,
-                          ),
+                          // Container(
+                          //   // margin: EdgeInsets.only(left: 23),
+                          //   child: Text('离线',
+                          //       style: TextStyle(
+                          //           fontSize: 12,
+                          //           color: rgba(150, 148, 166, 1),
+                          //           fontWeight: FontWeight.w400)),
+                          // ),
+                          // Container(
+                          //   decoration: new BoxDecoration(
+                          //     // border: new Border.all(color: Colors.white, width: 6), // 边色与边宽度
+                          //     color: Colors.grey, // 底色
+                          //     shape: BoxShape.circle, // 默认值也是矩形
+                          //   ),
+                          //   margin: EdgeInsets.only(left: 5, right: 20),
+                          //   height: 6,
+                          //   width: 6,
+                          //   alignment: Alignment.center,
+                          // ),
                         ]) : Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
