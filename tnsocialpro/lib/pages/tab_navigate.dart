@@ -822,9 +822,12 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
     } catch (e) {}
   }
 
+  StreamSubscription<LoginoutEvent> loginoutSusc;
+  StreamSubscription<TabSwitchBus> tabSwitchSusc;
+  StreamSubscription<ChatRefreshEvent> chatSusc;
   //监听Bus events
   void _listen() {
-    eventLoginoutBus.on<LoginoutEvent>().listen((event) {
+    loginoutSusc??=eventLoginoutBus.on<LoginoutEvent>().listen((event) {
       prefs.setString('tk', '');
       prefs.setInt('account_id', 0);
       prefs.setInt('gender', 0);
@@ -832,7 +835,7 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
       this.widget.tk = '';
       setState(() {});
     });
-    tabSwitchBus.on<TabSwitchBus>().listen((event) {
+    tabSwitchSusc ??= tabSwitchBus.on<TabSwitchBus>().listen((event) {
       tabController.jumpToPage(2);
       setState(() {
         currentIndex = 2;
@@ -840,7 +843,7 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
       setState(() {});
     });
     // 未读
-    eventChatRefreshBus.on<ChatRefreshEvent>().listen((event) async {
+    chatSusc ??=eventChatRefreshBus.on<ChatRefreshEvent>().listen((event) async {
       setState(() {
         var timeOr = prefs.getInt('eventChatRefreshBus');
         var timeVal = DateTime.now().millisecondsSinceEpoch;
