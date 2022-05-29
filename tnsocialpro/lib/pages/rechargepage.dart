@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -54,7 +56,6 @@ class _RechargePageState extends State<RechargePage> {
           if (isPaySuccess) {
             isUppic = true;
             // 更新订单
-            _updateOrder(ordernoV);
             Fluttertoast.showToast(msg: '充值成功');
           } else {
             // Fluttertoast.showToast(msg: '充值失败');
@@ -620,9 +621,11 @@ class _RechargePageState extends State<RechargePage> {
     );
   }
 
+  StreamSubscription<RechargeEvent> rechargeBusStream;
+
   //监听Bus events
   void _listen() {
-    rechargeBus.on<RechargeEvent>().listen((event) {
+    rechargeBusStream??= rechargeBus.on<RechargeEvent>().listen((event) {
       setState(() async {
         if (1 == event.type) {
           // 支付宝
@@ -691,23 +694,6 @@ class _RechargePageState extends State<RechargePage> {
     }
   }
 
-  // 更新订单信息
-  _updateOrder(int orderno) async {
-    try {
-      var res = await G.req.shop.updateOrderReq(
-          tk: widget.tk,
-          orderno: orderno);
-      var data = res.data;
-      // Navigator.pop(context);
-      if (data == null) return;
-      int code = data['code'];
-      if (20000 == code) {
-      } else {
-      }
-    } catch (e) {
-    }
-  }
-
   // 执行支付宝支付
   _doAliPay(int orderno, String tianVal) async {
     try {
@@ -729,7 +715,6 @@ class _RechargePageState extends State<RechargePage> {
             if (payResult['resultStatus'] == '9000') {
               isUppic = true;
               // 更新订单
-              _updateOrder(orderno);
               Fluttertoast.showToast(msg: '充值成功');
             } else {
               // Fluttertoast.showToast(msg: '充值失败');

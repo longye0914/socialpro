@@ -1510,22 +1510,28 @@ class _MineGirlPageState extends State<MineGirlPage> {
     super.dispose();
   }
 
+  StreamSubscription<ModifyFeedEvent> modifyFeedEvent;
+  StreamSubscription<MyVoiceEvent> myVoiceEvent;
+  StreamSubscription<ModifyHeadEvent> modifyHeadEvent;
+  StreamSubscription<LoginoutEvent> loginoutEvent;
+
   //监听Bus events
   void _listen() {
-    modifyFeedbackBus.on<ModifyFeedEvent>().listen((event) {
+
+    modifyFeedEvent ??=modifyFeedbackBus.on<ModifyFeedEvent>().listen((event) {
       print("modifyFeedbackBus图片");
       getUserPicture();
     });
-    myvoiceBus.on<MyVoiceEvent>().listen((event) {
+    myVoiceEvent ??= myvoiceBus.on<MyVoiceEvent>().listen((event) {
       getUserVoice();
     });
-    modifyHeadBus.on<ModifyHeadEvent>().listen((event) {
+    modifyHeadEvent??= modifyHeadBus.on<ModifyHeadEvent>().listen((event) {
       setState(() {
         widget.myInfoData.userpic = event.text;
 //        getOldInfo();
       });
     });
-    eventLoginoutBus.on<LoginoutEvent>().listen((event) {
+    loginoutEvent??=eventLoginoutBus.on<LoginoutEvent>().listen((event) {
       setState(() {
         _prefs.setString('tk', '');
         _prefs.setInt('account_id', 0);
@@ -1533,7 +1539,7 @@ class _MineGirlPageState extends State<MineGirlPage> {
         _prefs.setBool('isRegister', false);
       });
     });
-    _infoSubsription = myinfolistBus.on<MyinfolistEvent>().listen((event) {
+    _infoSubsription ??= myinfolistBus.on<MyinfolistEvent>().listen((event) {
       print("myinfolistBus-minegirl-");
       getUserInfo(event.isRefresh);
     });

@@ -266,6 +266,7 @@ class ChatItemState extends State<ChatItem> implements EMMessageStatusListener {
   @override
   void onError(EMError error) {
     setState(() {});
+    print(error);
     print('发送失败');
   }
 

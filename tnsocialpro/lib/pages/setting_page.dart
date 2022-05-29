@@ -273,7 +273,8 @@ class _SettingPageState extends State<SettingPage> {
           _prefs.setString('phone', '');
           _prefs.setBool('isRegister', false);
           try {
-            await EMClient.getInstance.logout(true);
+            bool  sss = await EMClient.getInstance.logout(true);
+            print("退出环信登录${sss}");
           } on EMError {}
           Navigator.push(context,
               new MaterialPageRoute(builder: (context) => new LoginIndex()));

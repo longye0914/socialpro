@@ -225,12 +225,13 @@ class ReqBusiness {
   /// 获取 留声机数据
   Future<Response> getUserRandomVoice({
     @required String tk,
+    @required int page
   }) {
     BaseOptions _baseOptions = BaseOptions(headers: {
       'Authorization': tk,
     });
     Dio _calendarDio = Dio(_baseOptions);
-    return _calendarDio.get(Constants.requestUrl + 'user/getUserRandomVoice?');
+    return _calendarDio.get(Constants.requestUrl + 'user/getUserRandomVoice?currentPage=${page}');
   }
 
   /// 女 获取音频列表
@@ -771,22 +772,6 @@ class ReqBusiness {
       "amount": amount,
     });
     return _editInfoDio.post(Constants.requestUrl + 'pay/createOrder?',
-        data: formData);
-  }
-
-  // 更新支付订单
-  Future<Response> updateOrderReq({
-    @required String tk,
-    @required int orderno,
-  }) {
-    BaseOptions _baseOptions = BaseOptions(headers: {
-      'Authorization': tk,
-    });
-    Dio _editInfoDio = Dio(_baseOptions);
-    FormData formData = FormData.fromMap({
-      "orderno": orderno,
-    });
-    return _editInfoDio.post(Constants.requestUrl + 'pay/updateOrder?',
         data: formData);
   }
 

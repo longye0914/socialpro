@@ -8,6 +8,7 @@ import 'package:im_flutter_sdk/im_flutter_sdk.dart';
 import 'package:tnsocialpro/data/voicelist/data.dart';
 import 'package:tnsocialpro/utils/global.dart';
 import 'package:tnsocialpro/widget/row_noline.dart';
+
 import 'chat/chat_page.dart';
 import 'girldetailpage.dart';
 
@@ -590,12 +591,15 @@ class _GrampphonePageState extends State<GrampphonePage> {
     } catch (e) {}
   }
 
+  int pageNo = 1;
   /// 获取留声机数据
   getRadomVoice() async {
     try {
       var res = await G.req.shop.getUserRandomVoice(
           tk: widget.tk,
+          page:pageNo
       );
+      pageNo++;
       if (res.data != null) {
         int code = res.data['code'];
         if (20000 == code) {

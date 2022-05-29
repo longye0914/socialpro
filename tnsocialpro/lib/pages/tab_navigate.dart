@@ -278,10 +278,14 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
       getVisitUserData();
       getMyLikelistData();
       if (null != widget.emaccount) {
+        print("已经登录？${EMClient.getInstance.isLoginBefore}");
         if (!EMClient.getInstance.isLoginBefore) {
           try {
+            print("登录异常${widget.emaccount}");
             await EMClient.getInstance.login(widget.emaccount, 'adminTianNi');
           } on EMError catch (e) {
+            print("登录异常");
+            print(e);
           } finally {}
         }
       }
@@ -828,6 +832,7 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
   StreamSubscription<LoginoutEvent> loginoutSusc;
   StreamSubscription<TabSwitchBus> tabSwitchSusc;
   StreamSubscription<ChatRefreshEvent> chatSusc;
+
   //监听Bus events
   void _listen() {
     loginoutSusc??=eventLoginoutBus.on<LoginoutEvent>().listen((event) {
@@ -857,9 +862,9 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
         }
       });
     });
-    // myinfolistBus.on<MyinfolistEvent>().listen((event) {
-    //   getUserInfo();
-    // });
+    myinfolistBus.on<MyinfolistEvent>().listen((event) {
+      getUserInfo();
+    });
   }
 
   void refreshUnreadIm() async {
@@ -996,7 +1001,11 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
   }
 
   void _incrementCounter() {
-
+    print("${widget.emaccount}登录异常");
+    EMClient.getInstance.userInfoManager.getCurrentUserInfo().then((value) =>{ print(value)});
+    print("${EMClient.getInstance.options}登录异常");
+    EMClient.getInstance.login(widget.emaccount, 'adminTianNi');
+    print( "------${EMClient.getInstance.currentUsername}");
     bool isConnected = EMClient.getInstance.connected;
     print('isConnnecte ${isConnected}');
     return;

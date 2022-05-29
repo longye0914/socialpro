@@ -28,6 +28,7 @@ void main() {
   var options = EMOptions(appKey: 'handenterprise#tianni');
   options.debugModel = true;
   options.pushConfig = config;
+  options.autoLogin = true;
   EMClient.getInstance.init(options).then((value) => null);
   runApp(MyApp());
 }
