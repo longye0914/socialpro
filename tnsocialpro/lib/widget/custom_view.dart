@@ -933,7 +933,7 @@ class MainUserCard extends StatelessWidget {
                           ),
                           (null == myInfoData.voiceset || myInfoData.voiceset.isEmpty) ? Container() : Container(
                             margin: EdgeInsets.only(left: 23),
-                            child: Text(myInfoData.voiceset.split('B')[0],
+                            child: Text(myInfoData.voiceset.split('Q')[0],
                                 style: TextStyle(
                                     fontSize: 18,
                                     color: rgba(234, 117, 187, 1),

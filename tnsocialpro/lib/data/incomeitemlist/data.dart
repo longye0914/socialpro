@@ -33,6 +33,7 @@ class Incomeitemlist {
   String incomemon;
   int itemtype;
   String create_time;
+  String anchorIncomemon;
 
   Incomeitemlist({
     this.id,
@@ -42,7 +43,8 @@ class Incomeitemlist {
     this.anthorname,
     this.incomemon,
     this.itemtype,
-    this.create_time
+    this.create_time,
+    this.anchorIncomemon
   });
 
   //反序列化

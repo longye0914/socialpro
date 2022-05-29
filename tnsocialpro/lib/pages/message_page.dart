@@ -429,7 +429,7 @@ class _FindingTabViewState extends State<FindingTabView>
                   myInfoDa.userpic,
                   (null == myInfoDa.priimset)
                       ? ''
-                      : myInfoDa.priimset.split('B')[0],
+                      : myInfoDa.priimset.split('Q')[0],
                   mheadimgV,
                   con),
             ),

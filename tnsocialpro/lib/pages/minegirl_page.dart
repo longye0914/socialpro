@@ -807,7 +807,7 @@ class _MineGirlPageState extends State<MineGirlPage> {
                                       builder: (context) => new LoginIndex()));
                             } else {
                               // Pickers.showSinglePicker(context,
-                              //   data: ['10B/分钟', '50B/分钟', '100B/分钟', '150B/分钟', '200B/分钟', '250B/分钟', '300B/分钟', '350B/分钟'],
+                              //   data: ['10Q/分钟', '50Q/分钟', '100Q/分钟', '150Q/分钟', '200Q/分钟', '250Q/分钟', '300Q/分钟', '350Q/分钟'],
                               //   selectData: videoOrder,
                               //   onConfirm: (p, position) {
                               //     setState(() {
@@ -818,14 +818,14 @@ class _MineGirlPageState extends State<MineGirlPage> {
                               //   // onChanged: (p) => print('数据发生改变：$p')
                               // );
                               var aa = [
-                                '10B/分钟',
-                                '50B/分钟',
-                                '100B/分钟',
-                                '150B/分钟',
-                                '200B/分钟',
-                                '250B/分钟',
-                                '300B/分钟',
-                                '350B/分钟'
+                                '10Q/分钟',
+                                '50Q/分钟',
+                                '100Q/分钟',
+                                '150Q/分钟',
+                                '200Q/分钟',
+                                '250Q/分钟',
+                                '300Q/分钟',
+                                '350Q/分钟'
                               ];
                               JhPickerTool.showStringPicker(context, data: aa,
                                   clickCallBack: (int index, var str) {
@@ -932,7 +932,7 @@ class _MineGirlPageState extends State<MineGirlPage> {
                                       builder: (context) => new LoginIndex()));
                             } else {
                               // Pickers.showSinglePicker(context,
-                              //   data: ['10B/分钟', '50B/分钟', '100B/分钟', '150B/分钟', '200B/分钟', '250B/分钟', '300B/分钟', '350B/分钟'],
+                              //   data: ['10Q/分钟', '50Q/分钟', '100Q/分钟', '150Q/分钟', '200Q/分钟', '250Q/分钟', '300Q/分钟', '350Q/分钟'],
                               //   selectData: voiceOrder,
                               //   onConfirm: (p, position) {
                               //     setState(() {
@@ -943,14 +943,14 @@ class _MineGirlPageState extends State<MineGirlPage> {
                               //   // onChanged: (p) => print('数据发生改变：$p')
                               // );
                               var bb = [
-                                '10B/分钟',
-                                '50B/分钟',
-                                '100B/分钟',
-                                '150B/分钟',
-                                '200B/分钟',
-                                '250B/分钟',
-                                '300B/分钟',
-                                '350B/分钟'
+                                '10Q/分钟',
+                                '50Q/分钟',
+                                '100Q/分钟',
+                                '150Q/分钟',
+                                '200Q/分钟',
+                                '250Q/分钟',
+                                '300Q/分钟',
+                                '350Q/分钟'
                               ];
                               JhPickerTool.showStringPicker(context, data: bb,
                                   clickCallBack: (int index, var str) {
@@ -1048,14 +1048,14 @@ class _MineGirlPageState extends State<MineGirlPage> {
                                       builder: (context) => new LoginIndex()));
                             } else {
                               var cc = [
-                                '1B/条',
-                                '5B/条',
-                                '10B/条',
-                                '15B/条',
-                                '20B/条',
-                                '25B/条',
-                                '30B/条',
-                                '35B/条'
+                                '1Q/条',
+                                '5Q/条',
+                                '10Q/条',
+                                '15Q/条',
+                                '20Q/条',
+                                '25Q/条',
+                                '30Q/条',
+                                '35Q/条'
                               ];
                               JhPickerTool.showStringPicker(context, data: cc,
                                   clickCallBack: (int index, var str) {

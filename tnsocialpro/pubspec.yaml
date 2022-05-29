@@ -74,7 +74,7 @@ dependencies:
   # 元组
   tuple: ^2.0.0
   # 监听键盘弹起
-  keyboard_visibility: any
+  keyboard_visibility: 0.5.6
   audioplayer:
     path: ../audioplayer
   im_flutter_sdk:

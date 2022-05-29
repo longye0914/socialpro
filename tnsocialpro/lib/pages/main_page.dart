@@ -250,10 +250,11 @@ class _MainPageState extends State<MainPage> {
     if (!_loadMore) {
       _currentPage = 1;
     }
-print("男士，首页");
+    print("男士，首页");
     try {
       var res = await G.req.shop
           .getAllUserlistReq(tk: widget.tk, currentPage: _currentPage);
+      print(res);
       setState(() {
         if (res.data != null) {
           if(UserlistParent.fromJson(res.data).data.isEmpty){

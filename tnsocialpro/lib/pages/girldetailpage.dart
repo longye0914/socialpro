@@ -485,7 +485,7 @@ class _GirlDetailPageState extends State<GirlDetailPage> {
                                       children: [
                                           Container(
                                             // margin: EdgeInsets.only(left: 23),
-                                            child: Text('离线',
+                                            child: Text('',
                                                 style: TextStyle(
                                                     fontSize: 12,
                                                     color:
@@ -496,7 +496,7 @@ class _GirlDetailPageState extends State<GirlDetailPage> {
                                           Container(
                                             decoration: new BoxDecoration(
                                               // border: new Border.all(color: rgba(38, 231, 236, 1), width: 6), // 边色与边宽度
-                                              color: Colors.grey, // 底色
+                                              color: Colors.transparent, // 底色
                                               shape: BoxShape.circle, // 默认值也是矩形
                                             ),
                                             margin: EdgeInsets.only(
@@ -582,7 +582,7 @@ class _GirlDetailPageState extends State<GirlDetailPage> {
                                               margin: EdgeInsets.only(left: 23),
                                               child: Text(
                                                   myInfoData.voiceset
-                                                      .split('B')[0],
+                                                      .split('Q')[0],
                                                   style: TextStyle(
                                                       fontSize: 18,
                                                       color: rgba(
@@ -651,7 +651,7 @@ class _GirlDetailPageState extends State<GirlDetailPage> {
                                               margin: EdgeInsets.only(left: 23),
                                               child: Text(
                                                   myInfoData.videoset
-                                                      .split('B')[0],
+                                                      .split('Q')[0],
                                                   style: TextStyle(
                                                       fontSize: 18,
                                                       color: rgba(
@@ -1209,7 +1209,7 @@ class _GirlDetailPageState extends State<GirlDetailPage> {
             myInfoData.userpic,
             (null == myInfoData.priimset)
                 ? ''
-                : myInfoData.priimset.split('B')[0],
+                : myInfoData.priimset.split('Q')[0],
             widget.mheadimgV,
             conv),
       ),

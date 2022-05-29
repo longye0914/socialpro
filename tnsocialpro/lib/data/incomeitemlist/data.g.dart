@@ -2,17 +2,19 @@ part of 'data.dart';
 
 IncomeitemlistParent _$IncomeitemlistParentFromJson(Map<String, dynamic> json) {
   return IncomeitemlistParent(
-      code: json['code'] as int,
-      msg: json['msg'] as String,
-      data: (json['data'] as List)
-          ?.map((e) =>
-              e == null ? null : Incomeitemlist.fromJson(e as Map<String, dynamic>))
-          ?.toList(),
-      success: json['success'] as bool,
+    code: json['code'] as int,
+    msg: json['msg'] as String,
+    data: (json['data'] as List)
+        ?.map((e) => e == null
+            ? null
+            : Incomeitemlist.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    success: json['success'] as bool,
   );
 }
 
-Map<String, dynamic> _$IncomeitemlistParentToJson(IncomeitemlistParent instance) =>
+Map<String, dynamic> _$IncomeitemlistParentToJson(
+        IncomeitemlistParent instance) =>
     <String, dynamic>{
       'code': instance.code,
       'msg': instance.msg,
@@ -30,6 +32,7 @@ Incomeitemlist _$IncomeitemlistFromJson(Map<String, dynamic> json) {
     incomemon: json['incomemon'] as String,
     itemtype: json['itemtype'] as int,
     create_time: json['create_time'] as String,
+    anchorIncomemon: json['anchorIncomemon'] as String,
   );
 }
 

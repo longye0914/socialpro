@@ -620,7 +620,7 @@ class _GrampphonePageState extends State<GrampphonePage> {
             currVoice.id,
             currVoice.shopUser.username,
             currVoice.shopUser.userpic,
-            (null == currVoice.shopUser || null == currVoice.shopUser.priimset) ? '' : currVoice.shopUser.priimset.split('B')[0],
+            (null == currVoice.shopUser || null == currVoice.shopUser.priimset) ? '' : currVoice.shopUser.priimset.split('Q')[0],
             widget.mheadimgV,
             conv
         ),

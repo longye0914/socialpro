@@ -131,6 +131,9 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
                 currentIndex: currentIndex,
                 onTap: (index) async {
                   tabController.jumpToPage(index);
+                  if(currentIndex == 2){
+
+                  }
                   setState(() {
                     currentIndex = index;
                     // if (1 == index) {
@@ -277,7 +280,7 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
       if (null != widget.emaccount) {
         if (!EMClient.getInstance.isLoginBefore) {
           try {
-            await EMClient.getInstance.login(widget.emaccount, '12345678admin');
+            await EMClient.getInstance.login(widget.emaccount, 'adminTianNi');
           } on EMError catch (e) {
           } finally {}
         }
@@ -993,7 +996,11 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
   }
 
   void _incrementCounter() {
-    /*三秒后出发本地推送*/
+
+    bool isConnected = EMClient.getInstance.connected;
+    print('isConnnecte ${isConnected}');
+    return;
+   /* *//*三秒后出发本地推送*//*
     var fireDate = DateTime.fromMillisecondsSinceEpoch(
         DateTime.now().millisecondsSinceEpoch + 3000);
     var localNotification = LocalNotification(
@@ -1005,6 +1012,6 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
       subtitle: '一个测试',
     );
     JPush jj = new JPush();
-    jj.sendLocalNotification(localNotification);
+    jj.sendLocalNotification(localNotification);*/
   }
 }

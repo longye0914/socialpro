@@ -25,7 +25,7 @@ class CardIncomelist extends StatelessWidget {
           },
           child: InComeCard(
             createTime: articleData[i].create_time,
-            withdrawmon: articleData[i].incomemon,
+            withdrawmon: articleData[i].anchorIncomemon,
             itemtype: articleData[i].itemtype,
             username: articleData[i].username,
           )));
