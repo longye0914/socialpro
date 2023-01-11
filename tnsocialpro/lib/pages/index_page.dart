@@ -7,10 +7,7 @@ import 'package:tnsocialpro/pages/tab_navigate.dart';
 import 'package:tnsocialpro/utils/global.dart';
 import 'package:tnsocialpro/widget/common_widgets.dart';
 
-import 'genderinfo_page.dart';
 import 'login_index.dart';
-import 'logininfo_page.dart';
-import 'mainunlock_page.dart';
 
 class IndexPage extends StatefulWidget {
   @override
@@ -55,11 +52,17 @@ class IndexPageState extends State<IndexPage> {
   void toNextPage() {
     Navigator.push(
         context,
+        // new MaterialPageRoute(
+        //     builder: (context) =>
+        //     (null == tkV || tkV.isEmpty || null == myInfoData)
+        //         ? new LoginIndex() : (0 == infoV || 1 == infoV || null == infoV) ? new GenderinfoPage(tkV) : (2 == infoV) ? new LogininfoPage(tkV, genderV) :
+        //       (3 == infoV) ?  ((1 == genderV) ? new MainUnlockPage(tkV, genderV, phone) : new TabNavigate(tkV, phone, genderV)) : new TabNavigate(tkV, phone, genderV)));
         new MaterialPageRoute(
             builder: (context) =>
-            (null == tkV || tkV.isEmpty || null == myInfoData)
-                ? new LoginIndex() : (0 == infoV || 1 == infoV || null == infoV) ? new GenderinfoPage(tkV) : (2 == infoV) ? new LogininfoPage(tkV, genderV) :
-              (3 == infoV) ?  ((1 == genderV) ? new MainUnlockPage(tkV, genderV, phone) : new TabNavigate(tkV, phone, genderV)) : new TabNavigate(tkV, phone, genderV)));
+                (null == tkV || tkV.isEmpty || null == myInfoData)
+                    ? new LoginIndex()
+                    : new TabNavigate(tkV, phone, genderV)));
+
     // if (EMClient.getInstance.isLoginBefore == true) {
     //   // Navigator.of(context).pushReplacementNamed('/home');
     // } else {
@@ -120,6 +123,7 @@ class IndexPageState extends State<IndexPage> {
     }
     super.dispose();
   }
+
   /// 获取个人信息
   getUserInfo() async {
     try {

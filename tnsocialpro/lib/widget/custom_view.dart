@@ -602,6 +602,7 @@ class MyUserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   G.toast('88888');
     return Container(
       height: 100,
       margin: EdgeInsets.only(left: 15, right: 15, bottom: 10),
@@ -791,7 +792,7 @@ class MainUserCard extends StatelessWidget {
                 topRight: Radius.circular(18),
               ),
               image: new DecorationImage(
-                image: new NetworkImage((null == myInfoData.userpic || myInfoData.userpic.isEmpty) ? '' : myInfoData.userpic),
+                image: (null == myInfoData.userpic || myInfoData.userpic.isEmpty) ? AssetImage('assets/images/icon_femalechoosed.png') : new NetworkImage(myInfoData.userpic),
                 fit: BoxFit.cover
                 //这里是从assets静态文件中获取的，也可以new NetworkImage(）从网络上获取
                 // centerSlice: new Rect.fromLTRB(270.0, 180.0, 1360.0, 730.0),

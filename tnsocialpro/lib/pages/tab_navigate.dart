@@ -285,6 +285,7 @@ class TabNavigateState extends State<TabNavigate> with WidgetsBindingObserver {
             await EMClient.getInstance.login(widget.emaccount, 'adminTianNi');
           } on EMError catch (e) {
             print("登录异常");
+            G.toast(e.description);
             print(e);
           } finally {}
         }

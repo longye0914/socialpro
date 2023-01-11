@@ -103,7 +103,7 @@ class _GrampphonePageState extends State<GrampphonePage> {
           // height: double.infinity,
           width: double.infinity,
           alignment: Alignment.center,
-          padding: EdgeInsets.only(top: 20),
+          padding: EdgeInsets.only(top: 40),
           decoration: new BoxDecoration(
             // color: Colors.grey,
             // border: new Border.all(width: 2.0, color: Colors.transparent),
@@ -233,8 +233,9 @@ class _GrampphonePageState extends State<GrampphonePage> {
     }
   }
 
+  Future tyt;
   _updateImage(int count, Duration millisecond) {
-    Future.delayed(millisecond, () {
+    tyt = Future.delayed(millisecond, () {
       // if (_disposed) return;
       // if (0 == secondsPassed2) return;
       setState(() {
@@ -251,6 +252,7 @@ class _GrampphonePageState extends State<GrampphonePage> {
   @override
   void dispose() {
     super.dispose();
+    tyt.ignore();
     _disposed = true;
   }
 

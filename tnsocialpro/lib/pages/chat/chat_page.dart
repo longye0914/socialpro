@@ -78,12 +78,12 @@ class _ChatPageState extends State<ChatPage>
       submitDeviceInfo("1");
     });
     // 监听键盘弹起收回
-    _subscribeId = KeyboardVisibilityNotification().addNewListener(
-      onChange: (bool visible) {
-        _keyboardVisible = visible;
-        _setStateAndMoreToListViewEnd();
-      },
-    );
+    // _subscribeId = KeyboardVisibilityNotification().addNewListener(
+    //   onChange: (bool visible) {
+    //     _keyboardVisible = visible;
+    //     _setStateAndMoreToListViewEnd();
+    //   },
+    // );
 
     items = (1 == widget.gender) ? [
       ChatMoreViewItem(
@@ -182,11 +182,11 @@ class _ChatPageState extends State<ChatPage>
       body: GestureDetector(
         // 点击背景隐藏键盘
         onTap: () {
-          if (_keyboardVisible) {
-            _inputBarType = ChatInputBarType.normal;
-            SystemChannels.textInput.invokeMethod('TextInput.hide');
-            setState(() {});
-          }
+          // if (_keyboardVisible) {
+          //   _inputBarType = ChatInputBarType.normal;
+          //   SystemChannels.textInput.invokeMethod('TextInput.hide');
+          //   setState(() {});
+          // }
         },
         child: SafeArea(
           child: Column(

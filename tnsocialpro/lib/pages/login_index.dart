@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:color_dart/color_dart.dart';
 import 'package:flutter/material.dart';
@@ -64,11 +63,8 @@ class _LoginIndexState extends State<LoginIndex>
               height: double.infinity,
               width: double.infinity,
               // color: rgba(255, 255, 255, 1),
-              decoration: new BoxDecoration(
-                // color: Colors.grey,
-                // border: new Border.all(width: 2.0, color: Colors.transparent),
-                // borderRadius: new BorderRadius.all(new Radius.circular(0)),
-                image: new DecorationImage(
+              decoration: BoxDecoration(
+                image: DecorationImage(
                   fit: BoxFit.fill,
                   image: new AssetImage('assets/images/icon_loginvalidate.png'),
                   //这里是从assets静态文件中获取的，也可以new NetworkImage(）从网络上获取
@@ -289,7 +285,7 @@ class _LoginIndexState extends State<LoginIndex>
                                       child: Container(
                                         alignment: Alignment.center,
                                         child: Text(
-                                          '同意协议并登录',
+                                          '登录',
                                           style: TextStyle(
                                               color: rgba(255, 255, 255, 1),
                                               fontSize: 14,
@@ -335,15 +331,19 @@ class _LoginIndexState extends State<LoginIndex>
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  // InkWell(
-                                  //   child: Image.asset(
-                                  //     isChoosed
-                                  //         ? 'assets/images/icon_choosed.png'
-                                  //         : 'assets/images/icon_normal.png',
-                                  //     height: 15,
-                                  //     width: 15,
-                                  //   ),
-                                  // ),
+                                  InkWell(
+                                    child: Image.asset(
+                                      checkboxSelected
+                                          ? 'assets/images/icon_choosed.png'
+                                          : 'assets/images/icon_normal.png',
+                                      height: 18,
+                                      width: 18,
+                                    ),
+                                    onTap: () {
+                                      checkboxSelected = !checkboxSelected;
+                                      setState(() {});
+                                    },
+                                  ),
                                   InkWell(
                                     child: Opacity(
                                       opacity: 0.6,
@@ -360,7 +360,7 @@ class _LoginIndexState extends State<LoginIndex>
                                       child: Text(
                                         ' 《用户协议》',
                                         style: TextStyle(
-                                            color: rgba(255, 255, 255, 1),
+                                            color: Colors.blue,
                                             fontSize: 11,
                                             fontWeight: FontWeight.w400),
                                       ),
@@ -389,7 +389,7 @@ class _LoginIndexState extends State<LoginIndex>
                                       child: Text(
                                         '《隐私政策》',
                                         style: TextStyle(
-                                            color: rgba(255, 255, 255, 1),
+                                            color: Colors.blue,
                                             fontSize: 11,
                                             fontWeight: FontWeight.w400),
                                       ),
@@ -430,12 +430,66 @@ class _LoginIndexState extends State<LoginIndex>
     );
   }
 
+  bool checkboxSelected = false;
+
   Future<bool> requestPop() {
     return Future.value(false);
   }
 
+  void showDialogFunction() async {
+    bool isSelect = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: new Container(
+            child: Text("服务协议与隐私保护"),
+            margin: const EdgeInsets.fromLTRB(0, 5, 10, 5),
+          ),
+          //title 的内边距，默认 left: 24.0,top: 24.0, right 24.0
+          //默认底部边距 如果 content 不为null 则底部内边距为0
+          //            如果 content 为 null 则底部内边距为20
+          // titlePadding: EdgeInsets.all(10),
+          //标题文本样式
+          titleTextStyle: TextStyle(color: Colors.black87, fontSize: 16),
+          //中间显示的内容
+          content: Container(
+            child: Text("为了更好的保障您的合法权益，请您阅读并同意协议"),
+          ),
+          //中间显示内容的文本样式
+          contentTextStyle: TextStyle(color: Colors.black54, fontSize: 14),
+          //底部按钮区域
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () {
+                //关闭 返回true
+                checkboxSelected = true;
+                Navigator.of(context).pop(true);
+                loginCode();
+              },
+              child: const Text('同意', style: TextStyle(color: Colors.red)),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            FlatButton(
+              child: Text("暂不同意"),
+              onPressed: () {
+                //关闭 返回true
+                Navigator.of(context).pop(true);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   /// 验证码登录
   loginCode() async {
+    if (!checkboxSelected) {
+      showDialogFunction();
+      return;
+    }
     FocusScope.of(context).requestFocus(FocusNode());
     if (_userEtControllerPhone.text.isEmpty) {
       G.toast('请输入手机号');
@@ -521,11 +575,11 @@ class _LoginIndexState extends State<LoginIndex>
                         _userEtControllerPhone.text.toString().trim(),
                         gender)));
           }
-          await G.toast('登录成功');
+          G.toast('登录成功');
         } on EMError catch (e) {
           print("eerrr");
           print(e);
-          await G.toast('登录失败');
+          G.toast('登录失败');
         } finally {}
       } else {
         G.toast(data['msg'] == null ? "登录失败" : data['msg']);

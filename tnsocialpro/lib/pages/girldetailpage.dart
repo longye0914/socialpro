@@ -1082,8 +1082,9 @@ class _GirlDetailPageState extends State<GirlDetailPage> {
         int code = res.data['code'];
         if (20000 == code) {
           setState(() {
-            print("获取影虎详情");
+            print("111获取影虎详情");
             myInfoData = MyInfoParent.fromJson(res.data).data;
+            print('888888$myInfoData');
             visitUserReq();
           });
         }

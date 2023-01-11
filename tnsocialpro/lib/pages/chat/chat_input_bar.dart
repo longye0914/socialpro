@@ -71,7 +71,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
-        // 语音按钮
+        // 语音按钮 没有录音功能 先隐藏
         // Container(
         //   height: sHeight(48),
         //   padding: EdgeInsets.only(
@@ -111,6 +111,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
             ),
             margin: EdgeInsets.only(
               top: sHeight(6),
+              left: sHeight(8),
               bottom: sHeight(8),
             ),
             decoration: BoxDecoration(
@@ -257,7 +258,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
 
   /// 输入框
   Widget _inputText() {
-    return TextFormField(
+    return TextField(
       focusNode: _inputFocusNode,
       textInputAction: TextInputAction.newline,
       onChanged: (text) {
@@ -274,6 +275,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
       decoration: InputDecoration(
         isCollapsed: true,
         border: InputBorder.none,
+        fillColor: Colors.blue,//临时加个背景
         contentPadding: EdgeInsets.fromLTRB(
           sWidth(16),
           sHeight(8),

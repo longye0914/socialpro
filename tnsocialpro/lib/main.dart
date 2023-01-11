@@ -117,6 +117,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       designSize: Size(375, 667),
       builder: () {
         return MaterialApp(
+          title: "甜腻",
           theme: ThemeData(
             primarySwatch: white,
           ),

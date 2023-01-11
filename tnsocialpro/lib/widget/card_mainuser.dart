@@ -4,6 +4,7 @@ import 'package:tnsocialpro/data/userlist/data.dart';
 import 'package:tnsocialpro/pages/girldetailpage.dart';
 import 'package:tnsocialpro/widget/custom_view.dart';
 
+// 男性用户首页 女性卡片样式
 class CardMainUser extends StatelessWidget {
   final List<MyUserData> articleData;
   String tk, headimg;
